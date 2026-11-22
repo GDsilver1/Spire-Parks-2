@@ -1,0 +1,127 @@
+<html lang="en"><head><script src="/_combos/host-sdk/1.9.0/host-sdk.js" data-combos-host-sdk="1"></script><script src="/_combos/runtime/e562fd2daa8cfbe0bf5367b27f02c2b858c268e760509373bdeb66ea963ec5ea/preview-bridge.js" data-combos-preview-bridge="1"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="icon" href="data:,">
+    <title>Spire Parks 2</title>
+    <meta name="description" content="Build and paint roller coasters above or below ground, decorate your park, and choose from fifteen coaster styles. Drag track-end handles or type exact values, tune lifts and launchers, and test with live telemetry from outside or on board.">
+    <style>
+      html,
+      body,
+      #viewport {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      html,
+      body {
+        overflow: hidden;
+        overscroll-behavior: none;
+        background: #000;
+      }
+
+      #viewport {
+        --surface-viewport-safe-top: env(safe-area-inset-top, 0px);
+        --surface-viewport-safe-right: env(safe-area-inset-right, 0px);
+        --surface-viewport-safe-bottom: env(safe-area-inset-bottom, 0px);
+        --surface-viewport-safe-left: env(safe-area-inset-left, 0px);
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+      }
+
+      #app {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        transform-origin: 0 0;
+      }
+
+      :where(#app > canvas) {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <script type="module" crossorigin="" src="./assets/index-BXuHaU4M.js"></script>
+  <link rel="modulepreload" as="script" crossorigin="" href="https://deploy.combos.game/deploy/gamedev/ae01a52a-96c9-83fe-8e6c-a12bb91f0e31/assets/main-CfRnVO2i.js"><link rel="stylesheet" crossorigin="" href="https://deploy.combos.game/deploy/gamedev/ae01a52a-96c9-83fe-8e6c-a12bb91f0e31/assets/main-BooBaOU_.css"><script src="https://cdn.combos.fun/webresource/html-to-image-1.11.13.min.js" async="" crossorigin="anonymous"></script></head>
+  <body>
+    <!-- Fixed brand bumper; host must inject window.combos before this module. -->
+    <div id="viewport">
+      <div id="app" style="width: 1288.89px; height: 725px; left: 0px; top: 0px; transform: scale(1.11724); --surface-dpr: 1; --surface-fit-scale: 1.1172413793103448; --surface-render-scale: 1.1172413793103448; --surface-css-width: 1440px; --surface-css-height: 810px; --surface-width: 1288.888888888889px; --surface-height: 725px; --surface-reference-width: 393px; --surface-reference-height: 725px; --surface-reference-offset-x: 447.94444444444446px; --surface-reference-offset-y: 0px; --surface-safe-top: 0px; --surface-safe-right: 0px; --surface-safe-bottom: 0px; --surface-safe-left: 0px;">
+    <canvas id="park" tabindex="0" aria-label="Interactive 3D coaster park" data-engine="three.js r181" width="1440" height="810"></canvas>
+    <header class="mast" data-combos-ui-region="hud" data-combos-ui-id="park-title">
+      <span class="eyebrow">COASTER DESIGN LAB / 02</span><h1>Spire Parks <em>2</em></h1><small id="park-count">EMPTY PARK</small>
+    </header>
+    <div id="marker" aria-hidden="true" style="transform: translate(644.444px, 362.071px);"><b>+</b><span>STATION SITE</span></div>
+    <div id="gizmo" aria-label="Track-end editing handles" style="transform: translate(644.444px, 362.5px);" class="" hidden="">
+      <svg viewBox="-92 -70 184 140" aria-hidden="true">
+        <path class="pitch" d="M0 0 -23 -26 -58 -42"></path><path class="turn" d="M0 0 Q-22 37 -67 38"></path>
+        <path class="length" d="M0 0 66 43"></path><path class="bank" d="M0 0 C-15 -46 33 -65 61 -43"></path><circle class="joint" r="5"></circle>
+      </svg>
+      <button id="axis-length" class="axis length" style="--axis-x:66px;--axis-y:43px" aria-label="Length 16 meters. Drag to adjust or tap to type."><i>↔</i><span>Length <b>16m</b></span></button><button id="axis-turn" class="axis turn" style="--axis-x:-67px;--axis-y:38px" aria-label="Curve 0 degrees. Drag to adjust or tap to type."><i>↪</i><span>Curve <b>0°</b></span></button><button id="axis-pitch" class="axis pitch" style="--axis-x:-58px;--axis-y:-42px" aria-label="Slope 0 degrees. Drag to adjust or tap to type."><i>↕</i><span>Slope <b>0°</b></span></button><button id="axis-bank" class="axis bank" style="--axis-x:61px;--axis-y:-43px" aria-label="Bank 0 degrees. Drag to adjust or tap to type."><i>⟳</i><span>Bank <b>0°</b></span></button>
+    </div>
+    <nav class="nav" data-combos-ui-region="controls" data-combos-ui-id="camera-tools" aria-label="Camera tools">
+      <button id="focus" aria-label="Focus editor (F)" title="Focus editor (F)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"></circle><path d="M12 2v4m0 12v4M2 12h4m12 0h4"></path></svg></button>
+      <button id="view" aria-label="Change camera (T)" title="Change camera (T)">View</button>
+      <button id="physics" aria-label="Park physics" title="Park physics">⚙</button>
+      <button id="help" aria-label="Controls and track guide">?</button>
+    </nav>
+    <div class="legend" data-combos-ui-region="text" data-combos-ui-id="shortcuts" data-combos-ui-critical="false">DRAG to pan · RIGHT DRAG to orbit · SCROLL to zoom</div>
+    <section class="workbench" data-combos-ui-region="controls" data-combos-ui-id="track-workbench" aria-label="Track builder">
+      <div class="bench-head"><div><label id="mode">STATION PLACEMENT</label><h2 id="title">Start a coaster</h2></div><div class="bench-tools"><button id="manage" class="secondary">Tools</button><button id="new" class="secondary" hidden="">＋ New</button></div></div>
+      <div id="setup" class="row"><label class="picker">Train model<select id="model"><option value="invert">B&amp;M Invert</option><option value="hyper">B&amp;M Hyper</option><option value="arrow">Arrow Looper</option><option value="dive">B&amp;M Dive</option><option value="launch">Tri-Rail Launch</option><option value="wood">Classic Woodie</option><option value="ptc">PTC Wooden Coaster</option><option value="gci">GCI Wooden Coaster</option><option value="accelerator">Intamin Accelerator</option><option value="ibox">RMC IBox</option><option value="topper">RMC Topper Track</option><option value="raptor">RMC Raptor</option><option value="arrow4d">Arrow 4D Coaster</option><option value="axis">S&amp;S Axis Coaster</option><option value="spinning">Spinning Coaster</option></select></label><button id="rotate" class="secondary" title="Rotate station by 45 degrees">↻ 0°</button></div>
+      <div id="editing" class="row" hidden=""><label class="picker">Coaster<select id="rides" aria-label="Select coaster"></select></label><label class="picker">Next piece<select id="kind"><option value="track">Free track</option><option value="lift">Chain lift</option><option value="boost">Booster</option><option value="brake">Trim brake</option><option value="block">Block brake</option><option value="drive">Drive tires</option><option value="loop">Vertical loop</option></select></label></div>
+      <div id="piece-tuning" hidden="">
+        <label id="speed-control" class="tuning" hidden=""><span id="speed-name">Chain speed</span><input id="piece-speed" type="number" step="1" inputmode="numeric" min="2" max="50"><span>km/h</span></label>
+        <label id="rotation-control" class="tuning" hidden=""><span id="rotation-name">Seat roll</span><input id="seat-rotation" type="range" min="-360" max="360" step="5"><output id="rotation-value" for="seat-rotation">0°</output></label>
+      </div>
+      <div class="actions placing" id="actions"><button id="undo" class="action" title="Undo (Ctrl+Z)" disabled="">↶ Undo</button><button id="close" class="action close" disabled="">Connect</button><button id="test" class="action test" disabled="">▶ Test</button><button id="commit" class="action primary" data-combos-action="primary">Place Station</button></div>
+      <p class="status " id="status" aria-live="polite">Coaster deleted.</p>
+    </section>
+    <aside id="telemetry" data-combos-ui-region="hud" data-combos-ui-id="ride-telemetry" data-combos-ui-critical="false" aria-label="Test telemetry" hidden="">
+      <strong>Ride telemetry</strong>
+      <div class="telemetry-line"><span>Vertical</span><output id="vertical-reading">1.53 g</output><meter aria-label="Vertical" id="vertical-bar" min="0" max="6" value="1.5290918882885691"></meter></div><div class="telemetry-line"><span>Lateral</span><output id="lateral-reading">0.18 g</output><meter aria-label="Lateral" id="lateral-bar" min="0" max="6" value="0.1809297161178382"></meter></div><div class="telemetry-line"><span>Longitudinal</span><output id="longitudinal-reading">-0.03 g</output><meter aria-label="Longitudinal" id="longitudinal-bar" min="0" max="6" value="0.034847303048621756"></meter></div><div class="telemetry-line"><span>Sickness estimate</span><output id="sickness-reading">50%</output><meter aria-label="Sickness estimate" id="sickness-bar" min="0" max="100" value="50.20729958750293"></meter></div>
+    </aside>
+    <dialog id="tools-dialog" aria-labelledby="tools-title" data-combos-ui-region="modal" data-combos-ui-id="park-tools">
+      <h2 id="tools-title">Park tools</h2>
+      <div id="paint-tools"><label class="picker">Paint target<select id="paint-target"><option value="all">Entire coaster</option><option value="station">Station</option><option value="0">1 · Chain lift</option><option value="1">2 · Chain lift</option><option value="2">3 · Chain lift</option><option value="3">4 · Chain lift</option><option value="4">5 · Free track</option><option value="5">6 · Free track</option><option value="6">7 · Free track</option><option value="7">8 · Free track</option><option value="8">9 · Free track</option><option value="9">10 · Free track</option><option value="10">11 · Free track</option><option value="11">12 · Free track</option><option value="12">13 · Free track</option><option value="13">14 · Free track</option><option value="14">15 · Free track</option></select></label><div class="tools-row"><label class="paint-swatch">Track paint <input id="paint-color" type="color"></label><button id="paint-apply" class="secondary">Paint track</button></div></div>
+      <div class="tools-row"><label class="picker">Scenery<select id="scenery-kind"><option value="oak">Oak tree</option><option value="pine">Pine tree</option><option value="rock">Boulder</option><option value="bench">Park bench</option></select></label><button id="scenery-place" class="secondary">Place</button></div>
+      <div class="tools-row"><button id="scenery-undo" class="secondary">Undo scenery</button><button id="delete-ride" class="secondary danger">Delete coaster</button></div>
+      <footer><button id="tools-done">Done</button></footer>
+    </dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-title" data-combos-ui-region="modal" data-combos-ui-id="confirm-delete"><h2 id="delete-title">Delete this coaster?</h2><p id="delete-copy">Intamin Accelerator and all of its track will be removed from the park.</p><footer><button id="delete-cancel">Cancel</button><button id="delete-confirm">Delete</button></footer></dialog>
+    <dialog id="guide" data-combos-ui-region="modal" data-combos-ui-id="control-guide"><h2>Build &amp; test</h2>
+      <p><strong>Place a station.</strong> Pick a model, then tap the terrain or use Place Station. The New button starts another coaster; the Coaster menu switches between rides.</p>
+      <p><strong>Drag the track-end handles or tap one to type an exact value.</strong> Length changes reach, Curve turns the piece, Slope raises or lowers it, and Bank rotates the rails. Tab to a handle and use arrow keys for fine changes. F brings the editor back into view.</p>
+      <p><strong>Build below ground.</strong> Tunnels form automatically. Open Tools to paint entire tracks or individual pieces, place scenery, or delete a ride.</p>
+      <p><strong>Keep your speed.</strong> Gravity moves the train. Pick chain lift for climbs, boosters for launches, drive tires for slow sections, or brakes to slow it. Test telemetry shows G-forces and an estimated sickness score.</p>
+      <p><strong>Camera:</strong> Drag to pan, right-drag or two-finger drag to orbit, and scroll or pinch to zoom. Tests start outside; tap POV or press T to ride. WASD moves the camera, Enter builds, and Ctrl+Z undoes.</p>
+      <footer><button id="done">Done</button></footer>
+    </dialog>
+    <dialog id="physics-dialog" aria-labelledby="physics-title" data-combos-ui-region="modal" data-combos-ui-id="physics-settings">
+      <h2 id="physics-title">Park physics</h2><p>These settings apply to the next test on every coaster.</p>
+      <label class="physics-row">Gravity <output id="gravity-value">1.00×</output><input id="gravity" type="range" min="0" max="3" step=".05"></label>
+      <label class="physics-row">Track friction <output id="friction-value">1.00×</output><input id="friction" type="range" min="0" max="8" step=".05"></label>
+      <footer><button id="physics-reset">Use defaults</button><button id="physics-done">Done</button></footer>
+    </dialog>
+    <dialog id="axis-edit" aria-labelledby="axis-title" data-combos-ui-region="modal" data-combos-ui-id="axis-value-editor">
+      <form id="axis-form">
+        <h2 id="axis-title">Edit bank</h2>
+        <label for="axis-value" id="axis-range">Degrees · positive or negative · no angle cap</label>
+        <input id="axis-value" type="text" autocomplete="off" autofocus="" required="" inputmode="text">
+        <footer><button id="axis-cancel" type="button">Cancel</button><button type="submit">Apply</button></footer>
+      </form>
+    </dialog></div>
+    </div>
+
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5eb3ade6eebc8d0',t:'MTc5NTM4NTA2Nw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5eb3ade6eebc8d0',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: hidden;"></iframe><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;132b18c76c72462e9cc26b662def0ded&quot;,&quot;r&quot;:1,&quot;spa&quot;:2}" crossorigin="anonymous"></script>
+
+
+</body></html>
