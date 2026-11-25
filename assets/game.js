@@ -21635,7 +21635,15 @@ const tr = {
     brake: "Trim brake",
     block: "Block brake",
     drive: "Drive tires",
-    loop: "Vertical loop"
+    loop: "Clothoid vertical loop",
+    cobra: "Cobra roll",
+    zeroG: "Zero-G roll",
+    corkscrew: "Corkscrew",
+    immelmann: "Immelmann",
+    diveLoop: "Dive loop",
+    heartline: "Heartline roll",
+    barrel: "Barrel roll",
+    stall: "Zero-G stall"
 }
   , Ds = Math.PI / 180
   , Ea = hr.clamp
@@ -21643,7 +21651,7 @@ const tr = {
   , Ct = {
     invert: {
         name: "B&M Invert",
-        detail: "Suspended four-across rows Â· box spine",
+        detail: "Suspended four-across rows  |  box spine",
         color: 1552300,
         frame: 1792872,
         gauge: .96,
@@ -21657,7 +21665,7 @@ const tr = {
     },
     hyper: {
         name: "B&M Hyper",
-        detail: "Open four-across seats Â· box spine",
+        detail: "Open four-across seats  |  box spine",
         color: 16754492,
         frame: 9586480,
         gauge: 1.03,
@@ -21671,7 +21679,7 @@ const tr = {
     },
     arrow: {
         name: "Arrow Looper",
-        detail: "Two-across high-back cars Â· tubular spine",
+        detail: "Two-across high-back cars  |  tubular spine",
         color: 15954773,
         frame: 8465481,
         gauge: .79,
@@ -21685,7 +21693,7 @@ const tr = {
     },
     dive: {
         name: "B&M Dive",
-        detail: "Wide six-across rows Â· heavy box spine",
+        detail: "Wide six-across rows  |  heavy box spine",
         color: 16306791,
         frame: 8614969,
         gauge: 1.33,
@@ -21699,7 +21707,7 @@ const tr = {
     },
     launch: {
         name: "Tri-Rail Launch",
-        detail: "Low two-across cars Â· triangular spine",
+        detail: "Low two-across cars  |  triangular spine",
         color: 9550591,
         frame: 3689091,
         gauge: .84,
@@ -21713,7 +21721,7 @@ const tr = {
     },
     wood: {
         name: "Classic Woodie",
-        detail: "Bench seating Â· timber trestles",
+        detail: "Bench seating  |  timber trestles",
         color: 16307109,
         frame: 9328956,
         gauge: .82,
@@ -21727,7 +21735,7 @@ const tr = {
     },
     ptc: {
         name: "PTC Wooden Coaster",
-        detail: "Three bench rows with high sides Â· laminated timber",
+        detail: "Three bench rows with high sides  |  laminated timber",
         color: 15317315,
         frame: 8410681,
         gauge: .83,
@@ -21741,7 +21749,7 @@ const tr = {
     },
     gci: {
         name: "GCI Wooden Coaster",
-        detail: "Articulated single-row Millennium Flyerâ€“style cars Â· laminated timber",
+        detail: "Articulated single-row Millennium Flyer-style cars  |  laminated timber",
         color: 10628140,
         frame: 10843463,
         gauge: .83,
@@ -21755,7 +21763,7 @@ const tr = {
     },
     accelerator: {
         name: "Intamin Accelerator",
-        detail: "Low rocket-nose cars Â· tubular lattice spine",
+        detail: "Low rocket-nose cars  |  tubular lattice spine",
         color: 14698326,
         frame: 3233927,
         gauge: .88,
@@ -21769,7 +21777,7 @@ const tr = {
     },
     ibox: {
         name: "RMC IBox",
-        detail: "Twin steel box rails Â· hybrid trestles",
+        detail: "Twin steel box rails  |  hybrid trestles",
         color: 14707254,
         frame: 7227182,
         gauge: .91,
@@ -21783,7 +21791,7 @@ const tr = {
     },
     topper: {
         name: "RMC Topper Track",
-        detail: "Steel caps on laminated wood runners Â· hybrid train",
+        detail: "Steel caps on laminated wood runners  |  hybrid train",
         color: 4611180,
         frame: 10645056,
         gauge: .9,
@@ -21797,7 +21805,7 @@ const tr = {
     },
     raptor: {
         name: "RMC Raptor",
-        detail: "Single steel rail Â· single-file straddle seating",
+        detail: "Single steel rail  |  single-file straddle seating",
         color: 4827234,
         frame: 4345157,
         gauge: .26,
@@ -21811,7 +21819,7 @@ const tr = {
     },
     arrow4d: {
         name: "Arrow 4D Coaster",
-        detail: "Four rails Â· outboard seats pitch independently of the track",
+        detail: "Four rails  |  outboard seats pitch independently of the track",
         color: 15284308,
         frame: 7882125,
         gauge: .95,
@@ -21922,8 +21930,43 @@ const tr = {
         color: 15389114, frame: 6579300, gauge: .9, seats: 2, rows: 2, spacing: 2.7, hang: !1, style: "wood", nose: .7, cars: 5
     }
 }
+  , trackProfiles = {
+    invert:       {rail: .119, spineW: .62, spineH: .52, tieStep: 1.12, supportStep: 5.8, gaugeScale: 1.00, architecture: "B&M inverted box spine"},
+    hyper:        {rail: .126, spineW: .68, spineH: .56, tieStep: 1.18, supportStep: 6.6, gaugeScale: 1.02, architecture: "B&M wide box spine"},
+    arrow:        {rail: .105, spineW: .23, spineH: .21, tieStep: 1.05, supportStep: 5.4, gaugeScale: .96, architecture: "Arrow tubular spine"},
+    dive:         {rail: .145, spineW: .82, spineH: .66, tieStep: 1.06, supportStep: 5.0, gaugeScale: 1.12, architecture: "B&M oversized dive box"},
+    launch:       {rail: .112, spineW: .30, spineH: .31, tieStep: .98, supportStep: 5.4, gaugeScale: .98, architecture: "Triangular launch spine"},
+    wood:         {rail: .105, spineW: .18, spineH: .16, tieStep: .62, supportStep: 3.0, gaugeScale: 1.00, architecture: "Timber track and cross-ties"},
+    ptc:          {rail: .112, spineW: .20, spineH: .18, tieStep: .72, supportStep: 2.9, gaugeScale: 1.02, architecture: "Classic three-bench timber track"},
+    gci:          {rail: .098, spineW: .17, spineH: .15, tieStep: .54, supportStep: 2.6, gaugeScale: .98, architecture: "Articulated wooden track"},
+    accelerator:  {rail: .116, spineW: .34, spineH: .30, tieStep: 1.02, supportStep: 5.8, gaugeScale: 1.00, architecture: "Intamin launch spine"},
+    ibox:         {rail: .122, spineW: .40, spineH: .22, tieStep: .92, supportStep: 4.8, gaugeScale: 1.02, architecture: "RMC twin IBox rails"},
+    topper:       {rail: .126, spineW: .25, spineH: .20, tieStep: .78, supportStep: 3.8, gaugeScale: 1.00, architecture: "RMC topper steel caps"},
+    raptor:       {rail: .158, spineW: .36, spineH: .34, tieStep: 1.35, supportStep: 5.1, gaugeScale: .90, architecture: "RMC single-rail spine"},
+    arrow4d:      {rail: .116, spineW: .29, spineH: .27, tieStep: 1.14, supportStep: 5.6, gaugeScale: 1.00, architecture: "Four-rail 4D chassis track"},
+    axis:         {rail: .132, spineW: .42, spineH: .40, tieStep: 1.28, supportStep: 5.2, gaugeScale: 1.06, architecture: "Circular S&S Axis carrier"},
+    spinning:     {rail: .108, spineW: .24, spineH: .23, tieStep: 1.02, supportStep: 4.7, gaugeScale: .98, architecture: "Compact spinning coaster rails"},
+    bmfloorless:  {rail: .121, spineW: .58, spineH: .49, tieStep: 1.08, supportStep: 5.9, gaugeScale: 1.00, architecture: "B&M floorless box spine"},
+    bmwing:       {rail: .135, spineW: .74, spineH: .58, tieStep: 1.22, supportStep: 6.1, gaugeScale: 1.12, architecture: "B&M wing wide box spine"},
+    bmstandup:    {rail: .117, spineW: .56, spineH: .47, tieStep: 1.10, supportStep: 5.7, gaugeScale: .99, architecture: "B&M stand-up box spine"},
+    bmgiga:       {rail: .139, spineW: .72, spineH: .60, tieStep: 1.28, supportStep: 6.8, gaugeScale: 1.08, architecture: "B&M giga-scale box spine"},
+    vekomaslc:    {rail: .112, spineW: .46, spineH: .39, tieStep: .96, supportStep: 4.9, gaugeScale: .98, architecture: "Vekoma suspended box spine"},
+    vekomanext:   {rail: .119, spineW: .50, spineH: .42, tieStep: 1.02, supportStep: 5.1, gaugeScale: 1.00, architecture: "Vekoma modern box spine"},
+    intaminblitz: {rail: .124, spineW: .34, spineH: .30, tieStep: .94, supportStep: 5.3, gaugeScale: .99, architecture: "Intamin Blitz launch chassis"},
+    macklaunch:   {rail: .118, spineW: .31, spineH: .25, tieStep: .88, supportStep: 5.0, gaugeScale: 1.04, architecture: "Mack tubular launch rails"},
+    gerstlauer:   {rail: .116, spineW: .43, spineH: .36, tieStep: .90, supportStep: 4.6, gaugeScale: .95, architecture: "Gerstlauer compact box spine"},
+    premierlim:   {rail: .113, spineW: .27, spineH: .24, tieStep: .86, supportStep: 4.8, gaugeScale: .97, architecture: "Premier tubular LIM rails"},
+    maurerspin:   {rail: .106, spineW: .22, spineH: .21, tieStep: .84, supportStep: 4.4, gaugeScale: .94, architecture: "Maurer compact spinner rails"},
+    gravitywood:  {rail: .108, spineW: .19, spineH: .17, tieStep: .58, supportStep: 2.8, gaugeScale: 1.01, architecture: "Gravity Group timber track"},
+    zamperlafamily:{rail: .102, spineW: .21, spineH: .19, tieStep: .82, supportStep: 4.1, gaugeScale: .92, architecture: "Zamperla family tubular rails"},
+    intaminprefab:{rail: .119, spineW: .24, spineH: .21, tieStep: .70, supportStep: 3.4, gaugeScale: 1.03, architecture: "Intamin prefabricated timber track"}
+  }
   , cc = i => i === "arrow4d" || i === "axis"
-  , Li = () => ({
+;
+for (const [modelKey, profile] of Object.entries(trackProfiles)) {
+    if (Ct[modelKey]) Ct[modelKey].trackProfile = profile;
+}
+const Li = () => ({
     length: 16,
     turn: 0,
     pitch: 0,
@@ -21948,7 +21991,70 @@ function Ka(i) {
         bank: 0
     }
 }
+const presetElementKinds = new Set(["loop", "cobra", "zeroG", "corkscrew", "immelmann", "diveLoop", "heartline", "barrel", "stall"]);
+function smoothPreset(u) { return u * u * (3 - 2 * u); }
+function srPreset(i, e, kind) {
+    const samples = [];
+    const forward = li(i.heading, i.pitch);
+    const vertical = Ta(i.heading, i.pitch, 0);
+    const side = li(i.heading + Math.PI / 2, 0);
+    const base = i.position.clone();
+    const length = Math.max(kind === "loop" ? 32 : 24, Number(e.length) || 40);
+    const count = Math.min(1600, Math.max(120, Math.ceil(length * 3.2)));
+    const loopRadius = Math.max(5.2, length / (Math.PI * 2));
+    const rollDegrees = kind === "immelmann" || kind === "diveLoop" ? 180 : 360;
+    const heightScale = kind === "cobra" ? 5.5 : kind === "corkscrew" ? 2.2 : kind === "barrel" ? 1.2 : kind === "heartline" ? .8 : 0;
+    const lateralScale = kind === "cobra" ? 3.2 : kind === "zeroG" ? 2.4 : kind === "corkscrew" ? 2.2 : kind === "heartline" ? 1.3 : kind === "barrel" ? 3.5 : kind === "stall" ? 1.4 : 0;
+    const pointAt = u => {
+        if (kind === "loop") {
+            const a = Math.PI * 2 * u, sa = Math.sin(a), ca = Math.cos(a);
+            const r = loopRadius;
+            const x = r * sa * (1 - .14 * ca);
+            const y = r * (1 - ca);
+            const dx = r * (ca * (1 - .14 * ca) + .14 * sa * sa) * Math.PI * 2;
+            const dy = r * sa * Math.PI * 2;
+            return {x, y, z:0, dx, dy, dz:0, roll:0};
+        }
+        if (kind === "immelmann" || kind === "diveLoop") {
+            const a = Math.PI * u, r = Math.max(7, length / Math.PI), sign = kind === "immelmann" ? 1 : -1;
+            const x = r * Math.sin(a), y = sign * r * (1 - Math.cos(a));
+            const dx = r * Math.PI * Math.cos(a), dy = sign * r * Math.PI * Math.sin(a);
+            const roll = rollDegrees * smoothPreset(Math.max(0, Math.min(1, (u - .56) / .44)));
+            return {x, y, z:0, dx, dy, dz:0, roll};
+        }
+        const a = Math.PI * u, sa = Math.sin(a), ca = Math.cos(a);
+        const envelope = sa * sa;
+        const denv = Math.PI * Math.sin(2 * a);
+        const wave = Math.sin(2 * Math.PI * u) * envelope;
+        const dwave = 2 * Math.PI * Math.cos(2 * Math.PI * u) * envelope + Math.sin(2 * Math.PI * u) * denv;
+        let y = heightScale * envelope, dy = heightScale * denv;
+        let z = lateralScale * wave, dz = lateralScale * dwave;
+        if (kind === "stall") {
+            y = 0; dy = 0;
+            const roll = 360 * (u < .28 ? smoothPreset(u / .28) * .5 : u < .72 ? .5 : .5 + .5 * smoothPreset((u - .72) / .28));
+            return {x:length*u, y, z, dx:length, dy, dz, roll};
+        }
+        if (kind === "zeroG") { y = 0; dy = 0; }
+        if (kind === "heartline") { y *= .7; dy *= .7; }
+        const roll = rollDegrees * smoothPreset(u);
+        return {x:length*u, y, z, dx:length, dy, dz, roll};
+    };
+    for (let index = 0; index <= count; index++) {
+        const u = index / count, p = pointAt(u);
+        const tangent = forward.clone().multiplyScalar(p.dx).addScaledVector(vertical, p.dy).addScaledVector(side, p.dz).normalize();
+        const heading = Math.atan2(tangent.z, tangent.x);
+        const pitch = Math.asin(Ea(tangent.y, -1, 1));
+        const position = base.clone().addScaledVector(forward, p.x).addScaledVector(vertical, p.y).addScaledVector(side, p.z);
+        const bank = i.bank + p.roll * Ds;
+        samples.push({position, up:Ta(heading, pitch, bank), kind, speed:e.speed, rotation:qn(i.rotation ?? 0, e.rotation ?? 0, u), color:e.color});
+    }
+    const last = samples[samples.length - 1];
+    const lastPoint = pointAt(1);
+    const tangent = forward.clone().multiplyScalar(lastPoint.dx).addScaledVector(vertical, lastPoint.dy).addScaledVector(side, lastPoint.dz).normalize();
+    return {samples, joint:{position:last.position.clone(), heading:Math.atan2(tangent.z,tangent.x), pitch:Math.asin(Ea(tangent.y,-1,1)), bank:i.bank + lastPoint.roll * Ds, rotation:e.rotation}};
+}
 function sr(i, e, t=e.kind) {
+    if (presetElementKinds.has(t)) return srPreset(i, e, t);
     const n = [{
         position: i.position.clone(),
         up: Ta(i.heading, i.pitch, i.bank),
@@ -22468,6 +22574,7 @@ function rm(i) {
         re.length < 2)
             return;
         const w = Ct[he]
+          , profile = w.trackProfile || {rail:.113, spineW:.59, spineH:.51, tieStep:1.16, supportStep:6.1, gaugeScale:1}
           , ce = l[he]
           , _e = []
           , Pe = []
@@ -22498,8 +22605,8 @@ function rm(i) {
               , rt = xe.length
               , zt = A.length
               , Et = re[Math.min(re.length - 1, ze + 1)].position.clone().sub(re[Math.max(0, ze - 1)].position).normalize().cross(ne).normalize()
-              , Vt = ue.clone().addScaledVector(Et, w.gauge)
-              , nt = ue.clone().addScaledVector(Et, -w.gauge)
+              , Vt = ue.clone().addScaledVector(Et, w.gauge * profile.gaugeScale)
+              , nt = ue.clone().addScaledVector(Et, -w.gauge * profile.gaugeScale)
               , ht = ue.clone().addScaledVector(ne, I);
             if (ze && (Ne += ue.distanceTo(re[ze - 1].position)),
             J) {
@@ -22508,7 +22615,7 @@ function rm(i) {
                 else if (Te && !ee)
                     for (const [st,At] of [[J.left, Vt], [J.right, nt]]) {
                         const P = w.style === "wood" ? .044 : w.style === "topper" ? .14 : .29;
-                        if (xe.push(Xe(st, At, ne, w.style === "ibox" ? .24 : .19, P)),
+                        if (xe.push(Xe(st, At, ne, profile.spineW, Math.max(.06, profile.rail * .65))),
                         be)
                             for (let H = 0; H < 4; H++) {
                                 const K = .07 + H * .065 + (w.style === "topper" ? .045 : 0);
@@ -22516,13 +22623,13 @@ function rm(i) {
                             }
                         w.style === "ibox" && oe.push(Xe(st.clone().addScaledVector(J.axis, -.2), At.clone().addScaledVector(ne, -.2), ne, .36, .06))
                     }
-                else if (_e.push(Se(J.left, Vt, ee ? .095 : .113), Se(J.right, nt, ee ? .095 : .113)),
+                else if (_e.push(Se(J.left, Vt, ee ? profile.rail * .84 : profile.rail), Se(J.right, nt, ee ? profile.rail * .84 : profile.rail)),
                 w.style === "four")
                     for (const st of [-1, 1])
                         _e.push(Se(J.position.clone().addScaledVector(J.side, st * .68).addScaledVector(J.axis, -.46), ue.clone().addScaledVector(Et, st * .68).addScaledVector(ne, -.46), .078));
                 if (!ee && !Te && !Ie)
                     if (w.style === "box")
-                        xe.push(Xe(J.spine, ht, ne, .59, .51));
+                        xe.push(Xe(J.spine, ht, ne, profile.spineW, profile.spineH));
                     else if (Ae)
                         if (Z === "boost" || Z === "station" || ue.y < 5 && Z === "brake")
                             A.push(Se(J.spine, ht, .19));
@@ -22534,9 +22641,9 @@ function rm(i) {
                 !ee && Z === J.kind && (Z === "lift" || Z === "boost" && Ae) && me.push(Se(J.position.clone().addScaledVector(J.axis, -.12), ue.clone().addScaledVector(ne, -.12), Z === "lift" ? .07 : .044))
             }
             if (Ne >= Ve) {
-                if (Ve = Ne + (Te ? .62 : Ie ? 2.8 : 1.16),
+                if (Ve = Ne + (Te ? profile.tieStep : Ie ? profile.tieStep * 2.4 : profile.tieStep),
                 Te && !ee)
-                    N.push(Xe(Vt.clone().addScaledVector(Et, .34).addScaledVector(ne, -.34), nt.clone().addScaledVector(Et, -.34).addScaledVector(ne, -.34), ne, .18, .15));
+                    N.push(Xe(Vt.clone().addScaledVector(Et, .34).addScaledVector(ne, -.34), nt.clone().addScaledVector(Et, -.34).addScaledVector(ne, -.34), ne, profile.spineW * .72, Math.max(.08, profile.rail * .8)));
                 else if (Ie)
                     ee || N.push(pe(ht, .38, .36, .45));
                 else if (ee)
@@ -22552,14 +22659,14 @@ function rm(i) {
                 } else
                     N.push(Se(Vt, ht, .093), Se(nt, ht, .093));
                 if (Fe = ht,
-                !ee && Z !== "track" && Z !== "loop") {
+                !ee && Z !== "track" && !presetElementKinds.has(Z)) {
                     const st = Z === "station" || Z === "drive" ? "drive" : Z === "block" ? "brake" : Z
                       , At = st === "lift" ? .17 : st === "brake" ? .44 : .34;
                     j[st].push(Se(ue.clone().addScaledVector(Et, At), ue.clone().addScaledVector(Et, -At), st === "lift" ? .125 : .17))
                 }
             }
             if (!ee && ht.y > .35 && Ne >= Ee && Z !== "station") {
-                Ee = Ne + (Te ? 2.85 : Ie ? 5.3 : 6.1);
+                Ee = Ne + (Te ? profile.supportStep : Ie ? profile.supportStep * .9 : profile.supportStep);
                 const st = [];
                 for (const At of Ie || !Te && ht.y < 5 ? [0] : [-1, 1]) {
                     const P = Te ? 1.16 + Math.min(1.8, ht.y * .055) : Math.min(6.5, .7 + Math.max(0, ht.y) * .115)
@@ -23117,11 +23224,11 @@ const Ri = "timberline-park-v2"
 }
   , zr = Object.keys(vn)
   , am = {
-    station: "Circuit complete Â· Train stopped at the station.",
-    valley: "Valleyed Â· The train ran out of momentum.",
-    rollback: "Rollback Â· The train rolled back to the station.",
-    end: "End of track Â· Connect the circuit to finish the test.",
-    derailed: "Derailed Â· Train left the track."
+    station: "Circuit complete  |  Train stopped at the station.",
+    valley: "Valleyed  |  The train ran out of momentum.",
+    rollback: "Rollback  |  The train rolled back to the station.",
+    end: "End of track  |  Connect the circuit to finish the test.",
+    derailed: "Derailed  |  Train left the track."
 };
 function om(i, e) {
     const t = i.root;
@@ -23146,10 +23253,10 @@ function om(i, e) {
       <button id="share-code" aria-label="Export park code" title="Export compressed park code">SAVE CODE</button>
       <button id="help" aria-label="Controls and track guide">?</button>
     </nav>
-    <div class="legend" data-combos-ui-region="text" data-combos-ui-id="shortcuts" data-combos-ui-critical="false">DRAG to pan Â· RIGHT DRAG to orbit Â· SCROLL to zoom</div>
+    <div class="legend" data-combos-ui-region="text" data-combos-ui-id="shortcuts" data-combos-ui-critical="false">DRAG to pan  |  RIGHT DRAG to orbit  |  SCROLL to zoom</div>
     <section class="workbench" data-combos-ui-region="controls" data-combos-ui-id="track-workbench" aria-label="Track builder">
       <div class="bench-head"><div><label id="mode">STATION PLACEMENT</label><h2 id="title">Start a coaster</h2></div><div class="bench-tools"><button id="manage" class="secondary">Tools</button><button id="new" class="secondary">NEW COASTER</button></div></div>
-      <div id="setup" class="row"><label class="picker">Train model<select id="model">${uc.map(P => `<option value="${P}">${Ct[P].name}</option>`).join("")}</select></label><button id="rotate" class="secondary" title="Rotate station by 45 degrees">ROTATE 0Â°</button></div><div id="model-cards" class="model-cards">${uc.map(P => `<button type="button" class="model-card" data-model="${P}" data-style="${Ct[P].style}"><b>${Ct[P].name}</b><small>${Ct[P].detail}</small></button>`).join("")}</div>
+      <div id="setup" class="row"><label class="picker">Train model<select id="model">${uc.map(P => `<option value="${P}">${Ct[P].name}</option>`).join("")}</select></label><button id="rotate" class="secondary" title="Rotate station by 45 degrees">ROTATE 0 DEG</button></div><div id="model-cards" class="model-cards">${uc.map(P => `<button type="button" class="model-card" data-model="${P}" data-style="${Ct[P].style}"><b>${Ct[P].name}</b><small>${Ct[P].detail}</small></button>`).join("")}</div>
       <div id="editing" class="row" hidden><label class="picker">Next piece<select id="kind">${dc.map(P => `<option value="${P}">${tr[P]}</option>`).join("")}</select></label><select id="rides" aria-label="Selected coaster" hidden></select></div>
       <div id="train-settings" class="train-settings" hidden>
         <label>Cars per train <input id="train-cars" type="number" min="1" step="1" value="5"></label>
@@ -23159,7 +23266,7 @@ function om(i, e) {
       <div id="piece-tuning" hidden>
         <label class="tuning" id="pivot-control"><span>Heartline pivot</span><input id="pivot-offset" type="range" min="-5" max="5" step="0.1" value="0"><output id="pivot-value">0.0 ft</output></label>
         <label id="speed-control" class="tuning"><span id="speed-name">Target speed</span><input id="piece-speed" type="number" step="1" inputmode="numeric" /><span>mph</span></label>
-        <label id="rotation-control" class="tuning"><span id="rotation-name">Seat rotation</span><input id="seat-rotation" type="range" min="-360" max="360" step="5" /><output id="rotation-value" for="seat-rotation">0Â°</output></label>
+        <label id="rotation-control" class="tuning"><span id="rotation-name">Seat rotation</span><input id="seat-rotation" type="range" min="-360" max="360" step="5" /><output id="rotation-value" for="seat-rotation">0 deg</output></label>
       </div>
       <div class="actions" id="actions"><button id="undo" class="action" title="Undo (Ctrl+Z)">UNDO</button><button id="close" class="action close">Connect</button><button id="test" class="action test">TEST</button><button id="commit" class="action primary" data-combos-action="primary">Place Station</button></div>
       <p class="status" id="status" aria-live="polite"></p>
@@ -23172,15 +23279,15 @@ function om(i, e) {
         <button id="start-game" class="title-start">START BUILDING</button>
         <button id="continue-game" class="title-secondary">CONTINUE PARK</button>
         <div class="title-import"><input id="import-code" placeholder="Paste a park code..." aria-label="Park code"><button id="import-park">IMPORT</button></div>
-        <small>OFFLINE PARK BUILDING Â· NO ACCOUNT REQUIRED</small>
+        <small>OFFLINE PARK BUILDING  |  NO ACCOUNT REQUIRED</small>
       </div>
-      <div class="title-footer"><span>SPIRE PARKS 2</span><span>DESIGN Â· BUILD Â· RIDE</span><span>v2.1</span></div>
+      <div class="title-footer"><span>SPIRE PARKS 2</span><span>DESIGN  |  BUILD  |  RIDE</span><span>v2.1</span></div>
     </section>
     <dialog id="menu-dialog" class="menu-dialog"><h2>Park menu</h2><label class="menu-field">Park name<input id="park-name" maxlength="48" placeholder="Untitled Park"></label><label class="menu-field">Selected coaster name<input id="coaster-name" maxlength="48" placeholder="Coaster name"></label><p>Park settings, save codes, and help.</p><div class="menu-actions"><button id="menu-tools">Park tools</button><button id="menu-physics">Physics settings</button><button id="menu-help">Controls & guide</button><button id="menu-save">Save / export code</button><button id="menu-main">Main menu</button></div><footer><button id="menu-done">Done</button></footer></dialog>
     <dialog id="code-dialog" class="code-dialog"><h2>Park code</h2><p>Copy this compact code to back up or share your park. It works offline</p><textarea id="park-code-output" readonly spellcheck="false"></textarea><footer><button id="copy-code">Copy code</button><button id="code-close">Done</button></footer></dialog>
     <aside id="telemetry" hidden data-combos-ui-region="hud" data-combos-ui-id="ride-telemetry" data-combos-ui-critical="false" aria-label="Test telemetry">
       <strong>Ride telemetry</strong>
-      ${[["vertical", "Vertical"], ["lateral", "Lateral"], ["longitudinal", "Longitudinal"], ["sickness", "Sickness estimate"]].map( ([P,H]) => `<div class="telemetry-line"><span>${H}</span><output id="${P}-reading">â€”</output><meter aria-label="${H}" id="${P}-bar" min="0" max="${P === "sickness" ? 100 : 6}" value="0"></meter></div>`).join("")}
+      ${[["vertical", "Vertical"], ["lateral", "Lateral"], ["longitudinal", "Longitudinal"], ["sickness", "Sickness estimate"]].map( ([P,H]) => `<div class="telemetry-line"><span>${H}</span><output id="${P}-reading">-</output><meter aria-label="${H}" id="${P}-bar" min="0" max="${P === "sickness" ? 100 : 6}" value="0"></meter></div>`).join("")}
     </aside>
     <dialog id="tools-dialog" aria-labelledby="tools-title" data-combos-ui-region="modal" data-combos-ui-id="park-tools">
       <h2 id="tools-title">Park tools</h2>
@@ -23200,8 +23307,8 @@ function om(i, e) {
     </dialog>
     <dialog id="physics-dialog" aria-labelledby="physics-title" data-combos-ui-region="modal" data-combos-ui-id="physics-settings">
       <h2 id="physics-title">Park physics</h2><p>These settings apply to the next test on every coaster.</p>
-      <label class="physics-row">Gravity <output id="gravity-value">1.00Ã—</output><input id="gravity" type="range" min="0" max="3" step=".05" /></label>
-      <label class="physics-row">Track friction <output id="friction-value">1.00Ã—</output><input id="friction" type="range" min="0" max="8" step=".05" /></label>
+      <label class="physics-row">Gravity <output id="gravity-value">1.00x</output><input id="gravity" type="range" min="0" max="3" step=".05" /></label>
+      <label class="physics-row">Track friction <output id="friction-value">1.00x</output><input id="friction" type="range" min="0" max="8" step=".05" /></label>
       <footer><button id="physics-reset">Use defaults</button><button id="physics-done">Done</button></footer>
     </dialog>
     <dialog id="axis-edit" aria-labelledby="axis-title" data-combos-ui-region="modal" data-combos-ui-id="axis-value-editor">
@@ -23260,7 +23367,7 @@ function om(i, e) {
     function De() {
         for (const P of ["gravity", "friction"])
             m(P).value = String(xe[P]),
-            n(`${P}-value`).textContent = `${xe[P].toFixed(2)}Ã—`;
+            n(`${P}-value`).textContent = `${xe[P].toFixed(2)}x`;
         try {
             localStorage.setItem(`${Ri}-physics`, JSON.stringify(xe))
         } catch {}
@@ -23314,7 +23421,7 @@ function om(i, e) {
         s("rides").value = D?.id ?? "",
         r("new").textContent = G && D ? "CANCEL" : "NEW COASTER",
         r("new").hidden = G && !D,
-        r("rotate").textContent = `ROTATE ${Math.round(te * 180 / Math.PI)}Â°`,
+        r("rotate").textContent = `ROTATE ${Math.round(te * 180 / Math.PI)} deg`,
         r("undo").disabled = P || !D?.pieces.length,
         r("close").disabled = P || (D?.pieces.length ?? 0) < 2,
         r("close").textContent = D?.closed ? "Reopen" : "Connect",
@@ -23356,14 +23463,14 @@ function om(i, e) {
         }
         Oe && (n("rotation-name").textContent = D?.model === "axis" ? "Seat roll" : "Seat pitch",
         m("seat-rotation").value = String(L.rotation ?? 0),
-        n("rotation-value").textContent = `${L.rotation ?? 0}Â°`),
+        n("rotation-value").textContent = `${L.rotation ?? 0} deg`),
         r("view").textContent = P ? Je ? "EXIT POV" : "POV" : "VIEW",
         r("view").disabled = pe?.outcome === "derailed";
         for (const qe of zr) {
             const ut = !!S
               , dt = r(`axis-${qe}`);
             dt.disabled = ut,
-            dt.querySelector("b").textContent = `${qe === "length" ? (L[qe] * 3.28084).toFixed(0) : L[qe]}${qe === "length" ? "ft" : "Â°"}`,
+            dt.querySelector("b").textContent = `${qe === "length" ? (L[qe] * 3.28084).toFixed(0) : L[qe]}${qe === "length" ? "ft" : " deg"}`,
             dt.setAttribute("aria-label", `${vn[qe].title} ${qe === "length" ? (L[qe] * 3.28084).toFixed(1) + " feet" : L[qe] + " degrees"}. Drag to adjust or tap to type.`)
         }
     }
@@ -23378,7 +23485,7 @@ function om(i, e) {
         n("paint-tools").hidden = !P,
         r("delete-ride").disabled = !P,
         r("scenery-undo").disabled = !F.length,
-        P && (s("paint-target").replaceChildren(new Option("Entire coaster","all"), new Option("Station","station"), ...P.pieces.map( (H, K) => new Option(`${K + 1} Â· ${tr[H.kind]}`,String(K))), ...P.closed ? [new Option("Return connection","return")] : []),
+        P && (s("paint-target").replaceChildren(new Option("Entire coaster","all"), new Option("Station","station"), ...P.pieces.map( (H, K) => new Option(`${K + 1}  |  ${tr[H.kind]}`,String(K))), ...P.closed ? [new Option("Return connection","return")] : []),
         Te()),
         d.showModal()
     }
@@ -23489,7 +23596,7 @@ function om(i, e) {
         N(),
         A(),
         me(),
-        x(`${D.pieces.length} built Â· ${Math.round(M.get(D.id).route.length * 3.28084)} ft${H ? " Â· tunnel carved" : ""}`, "good")
+        x(`${D.pieces.length} built  |  ${Math.round(M.get(D.id).route.length * 3.28084)} ft${H ? "  |  tunnel carved" : ""}`, "good")
     }
     function Ee() {
         G || !D || S || pe || !D.pieces.length || (D.closed ? D.closed = !1 : L = {
@@ -23544,7 +23651,7 @@ function om(i, e) {
         fe = !0,
         N(),
         A(),
-        x("Dispatching Â· 0 mph")
+        x("Dispatching  |  0 mph")
     }
     function ge() {
         S = void 0,
@@ -23566,13 +23673,13 @@ function om(i, e) {
         K !== L[P] && (L[P] = K,
         fe = !0,
         N(),
-        x(`${vn[P].title} ${P === "length" ? (K * 3.28084).toFixed(0) + " ft" : K + "Â°"} Â· preview`))
+        x(`${vn[P].title} ${P === "length" ? (K * 3.28084).toFixed(0) + " ft" : K + " deg"}  |  preview`))
     }
     function ne(P) {
         l.open || r(`axis-${P}`).disabled || (Pe = P,
         E.clear(),
         n("axis-title").textContent = `Edit ${vn[P].title.toLowerCase()}`,
-        n("axis-range").textContent = P === "length" ? "Length in feet (minimum 3.3)" : "Degrees Â· positive or negative Â· no angle cap",
+        n("axis-range").textContent = P === "length" ? "Length in feet (minimum 3.3)" : "Degrees  |  positive or negative  |  no angle cap",
         c.inputMode = P === "length" ? "decimal" : "text",
         c.value = String(P === "length" ? (L[P] * 3.28084).toFixed(1) : L[P]),
         c.setCustomValidity(""),
@@ -23675,7 +23782,7 @@ function om(i, e) {
                     Nt(pe),
                     ae = P;
                     const Oe = pe.route.at(pe.position)
-                      , qe = `${pe.speed < -.38 ? "ROLLING BACK" : Oe.kind === "station" ? "Dispatch" : tr[Oe.kind]} Â· ${Math.round(Math.abs(pe.speed) * 2.236936)} mph`;
+                      , qe = `${pe.speed < -.38 ? "ROLLING BACK" : Oe.kind === "station" ? "Dispatch" : tr[Oe.kind]}  |  ${Math.round(Math.abs(pe.speed) * 2.236936)} mph`;
                     qe !== w && (w = qe,
                     x(qe, pe.speed < -.38 ? "error" : ""))
                 }
@@ -23866,7 +23973,7 @@ function om(i, e) {
             };
             autoPovRecorder.start(250);
             povButton.textContent = "GENERATING POV"; povButton.disabled = true;
-            x("Running the coaster automatically and generating its POV videoâ€¦", "good");
+            x("Running the coaster automatically and generating its POV video...", "good");
         } catch (error) {
             autoPovStream?.getTracks().forEach(track => track.stop());
             autoPovStream = null; autoPovRecorder = null;
@@ -23906,7 +24013,7 @@ function om(i, e) {
     m("pivot-offset").addEventListener("input", () => { L.pivot = m("pivot-offset").valueAsNumber; n("pivot-value").textContent = `${L.pivot.toFixed(1)} ft`; fe = true; }, {signal:b}),
     m("seat-rotation").addEventListener("input", () => {
         L.rotation = m("seat-rotation").valueAsNumber,
-        n("rotation-value").textContent = `${L.rotation}Â°`,
+        n("rotation-value").textContent = `${L.rotation} deg`,
         fe = !0
     }
     , {
@@ -23935,6 +24042,7 @@ function om(i, e) {
         delete L.speed,
         L.kind = s("kind").value,
         L.kind === "loop" && (L.length = Math.max(32, L.length)),
+        ({cobra:42, zeroG:36, corkscrew:34, immelmann:42, diveLoop:42, heartline:34, barrel:34, stall:38}[L.kind] !== void 0) && (L.length = Math.max(({cobra:42, zeroG:36, corkscrew:34, immelmann:42, diveLoop:42, heartline:34, barrel:34, stall:38}[L.kind]), L.length)),
         fe = !0,
         N(),
         x(`${tr[L.kind]} selected. Drag its handles to shape it.`)
@@ -24492,7 +24600,7 @@ const jc = "mobile_portrait"
     profile: jc,
     surfaceTemplate: es.api
 });
-es.api.root.innerHTML = '<div id="boot"><strong>Spire Parks 2</strong>Preparing the parkâ€¦</div>';
+es.api.root.innerHTML = '<div id="boot"><strong>Spire Parks 2</strong>Preparing the park...</div>';
 const pm = Kc({
     critical: [],
     initializeInteractiveScene: async () => {
