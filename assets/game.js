@@ -23342,10 +23342,10 @@ function om(i, e) {
       <div class="title-content">
         <img class="title-logo" src="./assets/spire-logo.png" alt="Spire Parks 2">
         <p class="title-kicker">YOUR PARK. YOUR RULES. YOUR NEXT BIG THRILL.</p>
-        <button id="start-game" class="title-start">START BUILDING</button>
+        <button id="start-game" class="title-start">START DESIGNING</button>
         <button id="continue-game" class="title-secondary">CONTINUE PARK</button>
         <div class="title-import"><input id="import-code" placeholder="Paste a park code..." aria-label="Park code"><button id="import-park">IMPORT</button></div>
-        <small>OFFLINE PARK BUILDING  |  NO ACCOUNT REQUIRED</small>
+        <small>v1.5</small>
       </div>
       <div class="title-footer"><span>SPIRE PARKS 2</span><span>DESIGN  |  BUILD  |  RIDE</span><span>v2.1</span></div>
     </section>
