@@ -23009,7 +23009,7 @@ function om(i, e) {
     t.innerHTML = `
     <canvas id="park" tabindex="0" aria-label="Interactive 3D coaster park"></canvas>
     <header class="mast" data-combos-ui-region="hud" data-combos-ui-id="park-title">
-      <button id="hamburger" class="hamburger" aria-label="Open park menu" title="Park menu">â˜°</button><span class="eyebrow">COASTER DESIGN LAB / 02</span><h1>Spire Parks <em>2</em></h1><small id="park-name-label">UNTITLED PARK</small><small id="park-count">EMPTY PARK</small>
+      <button id="hamburger" class="hamburger" aria-label="Open park menu" title="Park menu">â˜°</button><span class="eyebrow">Coaster Editor</span><h1>Spire Parks <em>2</em></h1><small id="park-name-label">UNTITLED PARK</small><small id="park-count">EMPTY PARK</small>
     </header>
     <div id="marker" aria-hidden="true"><b>+</b><span>STATION SITE</span></div>
     <div id="gizmo" aria-label="Track-end editing handles" hidden>
