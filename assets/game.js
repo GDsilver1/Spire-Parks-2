@@ -21643,7 +21643,15 @@ const tr = {
     diveLoop: "Dive loop",
     heartline: "Heartline roll",
     barrel: "Barrel roll",
-    stall: "Zero-G stall"
+    stall: "Zero-G stall",
+    batwing: "Batwing",
+    norwegian: "Norwegian loop",
+    inclinedLoop: "Inclined loop",
+    overbank: "Overbanked turn",
+    waveTurn: "Wave turn",
+    cutback: "Cutback",
+    banana: "Banana roll",
+    inlineTwist: "Inline twist"
 }
   , Ds = Math.PI / 180
   , Ea = hr.clamp
@@ -21991,68 +21999,126 @@ function Ka(i) {
         bank: 0
     }
 }
-const presetElementKinds = new Set(["loop", "cobra", "zeroG", "corkscrew", "immelmann", "diveLoop", "heartline", "barrel", "stall"]);
+const presetElementKinds = new Set(["loop", "cobra", "zeroG", "corkscrew", "immelmann", "diveLoop", "heartline", "barrel", "stall", "batwing", "norwegian", "inclinedLoop", "overbank", "waveTurn", "cutback", "banana", "inlineTwist"]);
 function smoothPreset(u) { return u * u * (3 - 2 * u); }
+function smootherPreset(u) { return u * u * u * (u * (u * 6 - 15) + 10); }
+function presetCatmull(a, b, c, d, t) {
+    const t2 = t * t, t3 = t2 * t;
+    return .5 * ((2 * b) + (-a + c) * t + (2*a - 5*b + 4*c - d) * t2 + (-a + 3*b - 3*c + d) * t3);
+}
+function presetSpline(keys, u) {
+    const f = Math.max(0, Math.min(1, u)) * (keys.length - 1);
+    const index = Math.min(keys.length - 2, Math.floor(f));
+    const t = f - index;
+    const a = keys[Math.max(0, index - 1)], b = keys[index];
+    const c = keys[index + 1], d = keys[Math.min(keys.length - 1, index + 2)];
+    return [0, 1, 2, 3].map(k => presetCatmull(a[k], b[k], c[k], d[k], t));
+}
 function srPreset(i, e, kind) {
     const samples = [];
     const forward = li(i.heading, i.pitch);
     const vertical = Ta(i.heading, i.pitch, 0);
     const side = li(i.heading + Math.PI / 2, 0);
     const base = i.position.clone();
-    const length = Math.max(kind === "loop" ? 32 : 24, Number(e.length) || 40);
-    const count = Math.min(1600, Math.max(120, Math.ceil(length * 3.2)));
-    const loopRadius = Math.max(5.2, length / (Math.PI * 2));
-    const rollDegrees = kind === "immelmann" || kind === "diveLoop" ? 180 : 360;
-    const heightScale = kind === "cobra" ? 5.5 : kind === "corkscrew" ? 2.2 : kind === "barrel" ? 1.2 : kind === "heartline" ? .8 : 0;
-    const lateralScale = kind === "cobra" ? 3.2 : kind === "zeroG" ? 2.4 : kind === "corkscrew" ? 2.2 : kind === "heartline" ? 1.3 : kind === "barrel" ? 3.5 : kind === "stall" ? 1.4 : 0;
-    const pointAt = u => {
-        if (kind === "loop") {
-            const a = Math.PI * 2 * u, sa = Math.sin(a), ca = Math.cos(a);
-            const r = loopRadius;
-            const x = r * sa * (1 - .14 * ca);
-            const y = r * (1 - ca);
-            const dx = r * (ca * (1 - .14 * ca) + .14 * sa * sa) * Math.PI * 2;
-            const dy = r * sa * Math.PI * 2;
-            return {x, y, z:0, dx, dy, dz:0, roll:0};
+    const length = Math.max(22, Number(e.length) || 40);
+    const scale = length / 40;
+    const radius = Math.max(7.5, length / (Math.PI * 2));
+    let keys = null;
+    const pathAt = u => {
+        const v = Math.max(0, Math.min(1, u));
+        if (kind === "loop" || kind === "inclinedLoop") {
+            const a = Math.PI * 2 * v, sn = Math.sin(a), cs = Math.cos(a);
+            const x = radius * sn * (.82 + .18 * cs);
+            const y = radius * (1 - cs) * (1 - .10 * cs);
+            const z = kind === "inclinedLoop" ? .34 * radius * sn * (1 - cs) : 0;
+            return [x, y, z, 0];
         }
-        if (kind === "immelmann" || kind === "diveLoop") {
-            const a = Math.PI * u, r = Math.max(7, length / Math.PI), sign = kind === "immelmann" ? 1 : -1;
-            const x = r * Math.sin(a), y = sign * r * (1 - Math.cos(a));
-            const dx = r * Math.PI * Math.cos(a), dy = sign * r * Math.PI * Math.sin(a);
-            const roll = rollDegrees * smoothPreset(Math.max(0, Math.min(1, (u - .56) / .44)));
-            return {x, y, z:0, dx, dy, dz:0, roll};
+        if (kind === "immelmann") {
+            const a = Math.PI * v, sn = Math.sin(a), cs = Math.cos(a);
+            return [radius * sn, radius * (1 - cs), 0, 180 * smootherPreset(Math.max(0, Math.min(1, (v - .58) / .42)))];
         }
-        const a = Math.PI * u, sa = Math.sin(a), ca = Math.cos(a);
-        const envelope = sa * sa;
-        const denv = Math.PI * Math.sin(2 * a);
-        const wave = Math.sin(2 * Math.PI * u) * envelope;
-        const dwave = 2 * Math.PI * Math.cos(2 * Math.PI * u) * envelope + Math.sin(2 * Math.PI * u) * denv;
-        let y = heightScale * envelope, dy = heightScale * denv;
-        let z = lateralScale * wave, dz = lateralScale * dwave;
-        if (kind === "stall") {
-            y = 0; dy = 0;
-            const roll = 360 * (u < .28 ? smoothPreset(u / .28) * .5 : u < .72 ? .5 : .5 + .5 * smoothPreset((u - .72) / .28));
-            return {x:length*u, y, z, dx:length, dy, dz, roll};
+        if (kind === "diveLoop") {
+            const a = Math.PI * v, sn = Math.sin(a), cs = Math.cos(a);
+            return [radius * sn, -radius * (1 - cs), .12 * radius * Math.sin(2*a), 180 * smootherPreset(Math.max(0, Math.min(1, (v - .54) / .46)))];
         }
-        if (kind === "zeroG") { y = 0; dy = 0; }
-        if (kind === "heartline") { y *= .7; dy *= .7; }
-        const roll = rollDegrees * smoothPreset(u);
-        return {x:length*u, y, z, dx:length, dy, dz, roll};
+        if (kind === "zeroG") {
+            const env = Math.sin(Math.PI * v) ** 2;
+            return [length*v, 1.5*scale*env, .28*scale*Math.sin(2*Math.PI*v)*env, 360*smootherPreset(v)];
+        }
+        if (kind === "corkscrew") {
+            const env = Math.sin(Math.PI * v) ** 2;
+            const a = 2*Math.PI*v;
+            return [length*v, 2.4*scale*env*Math.sin(a), 3.4*scale*env*(1-Math.cos(a))*.5, 360*smootherPreset(v)];
+        }
+        if (kind === "heartline") {
+            const env = Math.sin(Math.PI*v) ** 2;
+            return [length*v, .42*scale*env*Math.sin(2*Math.PI*v), .72*scale*env*Math.sin(2*Math.PI*v), 360*smootherPreset(v)];
+        }
+        if (kind === "barrel") {
+            const env = Math.sin(Math.PI*v) ** 2;
+            const a = 2*Math.PI*v;
+            return [length*v, 2.5*scale*env*Math.sin(a), 2.1*scale*env*Math.cos(a), 360*smoothPreset(v)];
+        }
+        if (kind === "inlineTwist") {
+            const env = Math.sin(Math.PI*v) ** 2;
+            return [length*v, .55*scale*env, .18*scale*Math.sin(2*Math.PI*v)*env, 360*smootherPreset(v)];
+        }
+        if (kind === "overbank") {
+            const a = Math.PI*.5*v, r = length/(Math.PI*.5);
+            return [r*Math.sin(a), .5*scale*Math.sin(Math.PI*v), r*(1-Math.cos(a)), 82*smootherPreset(v)];
+        }
+        if (kind === "waveTurn") {
+            const env = Math.sin(Math.PI*v) ** 2;
+            return [length*v, 1.1*scale*Math.sin(2*Math.PI*v)*env, 3.4*scale*Math.sin(Math.PI*v)*env, 58*Math.sin(Math.PI*v)];
+        }
+        if (kind === "cutback") {
+            const a = Math.PI*v, r = length/Math.PI;
+            return [r*Math.sin(a), 1.3*scale*Math.sin(a)**2, r*(1-Math.cos(a)), 165*smootherPreset(v)];
+        }
+        if (kind === "banana") {
+            const env = Math.sin(Math.PI*v) ** 2;
+            return [length*v, 2.0*scale*Math.sin(Math.PI*v)*env, 2.8*scale*Math.sin(2*Math.PI*v)*env, 360*smootherPreset(v)];
+        }
+        if (keys) return presetSpline(keys, v).map((value, index) => index === 3 ? value : value*scale);
+        return [length*v, 0, 0, 0];
     };
-    for (let index = 0; index <= count; index++) {
-        const u = index / count, p = pointAt(u);
-        const tangent = forward.clone().multiplyScalar(p.dx).addScaledVector(vertical, p.dy).addScaledVector(side, p.dz).normalize();
-        const heading = Math.atan2(tangent.z, tangent.x);
-        const pitch = Math.asin(Ea(tangent.y, -1, 1));
-        const position = base.clone().addScaledVector(forward, p.x).addScaledVector(vertical, p.y).addScaledVector(side, p.z);
-        const bank = i.bank + p.roll * Ds;
-        samples.push({position, up:Ta(heading, pitch, bank), kind, speed:e.speed, rotation:qn(i.rotation ?? 0, e.rotation ?? 0, u), color:e.color});
+    const H = 13*scale, W = 7.5*scale;
+    if (kind === "cobra") keys = [
+        [0,0,0,0], [4,0,0,0], [8,2.5,0,25], [12,8.5,0,75],
+        [15,12.5,0,135], [18,11.5,2.2,180], [20,7.5,5.4,180],
+        [22,5.0,6.8,180], [24,7.5,5.4,180], [26,11.5,2.2,180],
+        [29,12.5,0,225], [32,8.5,0,285], [36,2.5,0,335], [40,0,0,360]
+    ];
+    if (kind === "stall") keys = [
+        [0,0,0,0], [3,0,0,0], [8,3.5,0,35], [13,9,0,105], [16,13,0,180],
+        [23,13,0,180], [27,10,0,220], [32,4,0,310], [37,0,0,360], [40,0,0,360]
+    ];
+    if (kind === "batwing") keys = [
+        [0,0,0,0], [4,0,0,0], [9,5,0,50], [13,11,1.5,150], [17,8,4,205],
+        [20,3,5,260], [23,8,4,310], [27,11,1.5,360], [31,5,0,330], [36,0,0,360], [40,0,0,360]
+    ];
+    if (kind === "norwegian") keys = [
+        [0,0,0,0], [4,0,0,0], [9,5,0,45], [14,12,0,145], [18,14,0,180],
+        [22,12,0,215], [27,5,0,315], [31,2,0,360], [35,5,0,315], [38,0,0,360], [40,0,0,360]
+    ];
+    const count = Math.min(2400, Math.max(180, Math.ceil(length*5)));
+    const delta = 1/count;
+    const getPoint = u => pathAt(Math.max(0, Math.min(1, u)));
+    for (let index=0; index<=count; index++) {
+        const u=index/count, p=getPoint(u), before=getPoint(Math.max(0,u-delta)), after=getPoint(Math.min(1,u+delta));
+        const dx=after[0]-before[0], dy=after[1]-before[1], dz=after[2]-before[2];
+        const tangent=forward.clone().multiplyScalar(dx).addScaledVector(vertical,dy).addScaledVector(side,dz).normalize();
+        const heading=Math.atan2(tangent.z,tangent.x);
+        const pitch=Math.asin(Ea(tangent.y,-1,1));
+        const position=base.clone().addScaledVector(forward,p[0]).addScaledVector(vertical,p[1]).addScaledVector(side,p[2]);
+        const bank=i.bank+p[3]*Ds;
+        samples.push({position,up:Ta(heading,pitch,bank),kind,speed:e.speed,rotation:qn(i.rotation??0,e.rotation??0,u),color:e.color});
     }
-    const last = samples[samples.length - 1];
-    const lastPoint = pointAt(1);
-    const tangent = forward.clone().multiplyScalar(lastPoint.dx).addScaledVector(vertical, lastPoint.dy).addScaledVector(side, lastPoint.dz).normalize();
-    return {samples, joint:{position:last.position.clone(), heading:Math.atan2(tangent.z,tangent.x), pitch:Math.asin(Ea(tangent.y,-1,1)), bank:i.bank + lastPoint.roll * Ds, rotation:e.rotation}};
+    const last=samples[samples.length-1], p=getPoint(1), before=getPoint(1-delta), after=getPoint(1);
+    const tangent=forward.clone().multiplyScalar(after[0]-before[0]).addScaledVector(vertical,after[1]-before[1]).addScaledVector(side,after[2]-before[2]).normalize();
+    return {samples,joint:{position:last.position.clone(),heading:Math.atan2(tangent.z,tangent.x),pitch:Math.asin(Ea(tangent.y,-1,1)),bank:i.bank+p[3]*Ds,rotation:e.rotation}};
 }
+
 function sr(i, e, t=e.kind) {
     if (presetElementKinds.has(t)) return srPreset(i, e, t);
     const n = [{
@@ -24041,8 +24107,7 @@ function om(i, e) {
     s("kind").addEventListener("change", () => {
         delete L.speed,
         L.kind = s("kind").value,
-        L.kind === "loop" && (L.length = Math.max(32, L.length)),
-        ({cobra:42, zeroG:36, corkscrew:34, immelmann:42, diveLoop:42, heartline:34, barrel:34, stall:38}[L.kind] !== void 0) && (L.length = Math.max(({cobra:42, zeroG:36, corkscrew:34, immelmann:42, diveLoop:42, heartline:34, barrel:34, stall:38}[L.kind]), L.length)),
+        ({loop:40,cobra:46,zeroG:38,corkscrew:36,immelmann:42,diveLoop:42,heartline:36,barrel:36,stall:44,batwing:48,norwegian:48,inclinedLoop:40,overbank:34,waveTurn:36,cutback:42,banana:42,inlineTwist:34}[L.kind] !== void 0) && (L.length = Math.max(({loop:40,cobra:46,zeroG:38,corkscrew:36,immelmann:42,diveLoop:42,heartline:36,barrel:36,stall:44,batwing:48,norwegian:48,inclinedLoop:40,overbank:34,waveTurn:36,cutback:42,banana:42,inlineTwist:34}[L.kind]), L.length)),
         fe = !0,
         N(),
         x(`${tr[L.kind]} selected. Drag its handles to shape it.`)
