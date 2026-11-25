@@ -1185,3 +1185,25 @@ dialog footer button {
 }
 /* Advanced actions now live in the top hamburger menu. */
 .nav #physics, .nav #share-code, .nav #help { display: none; }
+
+
+/* Spire Parks 2: readable text-first controls and in-world coaster picking */
+button, .nav button, .action, .secondary, .hamburger { font-family: Inter, "Trebuchet MS", ui-sans-serif, system-ui, sans-serif; font-variant-emoji: text; }
+.hamburger { width: auto; min-width: 52px; padding: 0 9px; font-size: 10px; font-weight: 900; letter-spacing: .08em; }
+#record-pov { min-width: 108px; font-size: 9px; font-weight: 900; letter-spacing: .04em; }
+#place-station, #share-code { font-size: 10px; font-weight: 850; letter-spacing: .035em; }
+#rotate { min-width: 92px; font-size: 10px; font-weight: 850; letter-spacing: .025em; }
+#new, #undo, #test, #commit { font-size: 10px; font-weight: 900; letter-spacing: .035em; }
+.axis i { font-family: Inter, "Trebuchet MS", ui-sans-serif, system-ui, sans-serif; font-style: normal; font-size: 8px; font-weight: 900; letter-spacing: -.04em; }
+#editing { justify-content: flex-start; }
+#editing > .picker { min-width: 170px; }
+.coaster-picker, .coaster-list, .coaster-card { display: none !important; }
+.model-card { min-height: 74px; padding-left: 48px; }
+.model-card::before { width: 34px; height: 46px; background-size: 32px 42px; }
+.model-card[data-style="wood"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 8 Q10 5 15 20 T38 8' fill='none' stroke='%23d6a46c' stroke-width='4'/%3E%3Cpath d='M4 11 L7 44 M34 12 L31 44 M4 31 L34 31' stroke='%23c18a54' stroke-width='2'/%3E%3C/svg%3E"); }
+.model-card[data-style="single"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 36 Q12 33 15 9 T38 16' fill='none' stroke='%239cf0d6' stroke-width='3'/%3E%3Cpath d='M12 36 L16 30 M26 36 L30 28' stroke='%23c7d6ca' stroke-width='2'/%3E%3C/svg%3E"); }
+.model-card[data-style="box"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 36 Q12 36 16 8 T38 13' fill='none' stroke='%239cf0d6' stroke-width='3'/%3E%3Cpath d='M4 39 L36 39 M8 39 L11 32 M30 39 L33 29' stroke='%23c7d6ca' stroke-width='2'/%3E%3C/svg%3E"); }
+.model-card[data-style="tube"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 35 Q12 33 16 11 T38 15' fill='none' stroke='%23f2b77b' stroke-width='2.5'/%3E%3Cpath d='M3 39 L37 39 M9 39 L14 27 M30 39 L34 28' stroke='%23c7d6ca' stroke-width='1.6'/%3E%3C/svg%3E"); }
+.model-card[data-style="tri"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 35 Q12 33 16 10 T38 15' fill='none' stroke='%23f2b77b' stroke-width='3'/%3E%3Cpath d='M5 39 L35 39 L20 24 Z' fill='none' stroke='%23c7d6ca' stroke-width='1.5'/%3E%3C/svg%3E"); }
+.model-card[data-style="ibox"]::before, .model-card[data-style="topper"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 35 Q12 33 16 9 T38 15' fill='none' stroke='%239cf0d6' stroke-width='3'/%3E%3Cpath d='M3 39 L37 39 M7 39 L13 29 M28 39 L34 27 M8 39 L34 29' stroke='%23c7d6ca' stroke-width='1.8'/%3E%3C/svg%3E"); }
+@media (max-width:520px) { #record-pov { min-width: 100px; } .nav button { font-size: 9px; } }
