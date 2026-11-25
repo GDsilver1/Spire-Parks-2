@@ -1020,7 +1020,7 @@ dialog footer button {
 }
 
 
-/* Spire Parks 2 — console-inspired presentation layer */
+/* Spire Parks 2 - console-inspired presentation layer */
 :root { font-family: Inter, "Trebuchet MS", ui-sans-serif, system-ui, sans-serif; }
 #app { background:#06104b; }
 .nav { flex-wrap:wrap; max-width:min(94vw,560px); }
