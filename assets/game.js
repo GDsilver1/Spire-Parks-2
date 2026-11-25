@@ -21851,6 +21851,76 @@ const tr = {
         nose: .46,
         cars: 4
     }
+    , bmfloorless: {
+        name: "B&M Floorless",
+        detail: "Four-across floorless trains with open box-spine track",
+        color: 14705244, frame: 5592405, gauge: 1.02, seats: 4, rows: 1, spacing: 2.42, hang: !1, style: "box", nose: .58, cars: 7
+    }
+    , bmwing: {
+        name: "B&M Wing Coaster",
+        detail: "Outboard wing seats with wide box-spine track",
+        color: 16750900, frame: 5987163, gauge: 1.24, seats: 4, rows: 1, spacing: 2.68, hang: !1, style: "box", nose: .62, cars: 7
+    }
+    , bmstandup: {
+        name: "B&M Stand-Up",
+        detail: "Four-across stand-up train profile on box spine",
+        color: 12159154, frame: 5263440, gauge: 1.0, seats: 4, rows: 1, spacing: 2.5, hang: !1, style: "box", nose: .5, cars: 6
+    }
+    , bmgiga: {
+        name: "B&M Giga Hyper",
+        detail: "Long four-across trains for high-speed giga layouts",
+        color: 16757504, frame: 7434614, gauge: 1.08, seats: 4, rows: 1, spacing: 2.52, hang: !1, style: "box", nose: .64, cars: 8
+    }
+    , vekomaslc: {
+        name: "Vekoma SLC",
+        detail: "Suspended looping coaster train with compact hangers",
+        color: 4169983, frame: 2631720, gauge: .94, seats: 4, rows: 1, spacing: 2.36, hang: !0, style: "box", nose: .44, cars: 10
+    }
+    , vekomanext: {
+        name: "Vekoma MK-1212",
+        detail: "Modern four-across train and compact steel box spine",
+        color: 16744231, frame: 4868682, gauge: 1.0, seats: 4, rows: 1, spacing: 2.34, hang: !1, style: "box", nose: .57, cars: 7
+    }
+    , intaminblitz: {
+        name: "Intamin Blitz",
+        detail: "Low streamlined launch train with compact chassis",
+        color: 15564031, frame: 2763306, gauge: .9, seats: 2, rows: 2, spacing: 2.45, hang: !1, style: "tri", nose: 1.08, cars: 5
+    }
+    , macklaunch: {
+        name: "Mack Multi-Launch",
+        detail: "Wide two-across launch cars with tubular rail profile",
+        color: 12763135, frame: 3618874, gauge: .98, seats: 2, rows: 2, spacing: 2.58, hang: !1, style: "tube", nose: .83, cars: 5
+    }
+    , gerstlauer: {
+        name: "Gerstlauer Euro-Fighter",
+        detail: "Compact trains with steep-lift box-spine track",
+        color: 16738892, frame: 3421236, gauge: .86, seats: 2, rows: 2, spacing: 2.25, hang: !1, style: "box", nose: .75, cars: 4
+    }
+    , premierlim: {
+        name: "Premier LIM Launch",
+        detail: "Compact launch train with tubular track structure",
+        color: 7208908, frame: 2631720, gauge: .88, seats: 2, rows: 2, spacing: 2.34, hang: !1, style: "tube", nose: .9, cars: 5
+    }
+    , maurerspin: {
+        name: "Maurer Spinner",
+        detail: "Compact spinning cars with individual rotating seats",
+        color: 16757504, frame: 3815994, gauge: .76, seats: 2, rows: 2, spacing: 2.55, hang: !1, style: "tube", nose: .48, cars: 4
+    }
+    , gravitywood: {
+        name: "Gravity Group Woodie",
+        detail: "Compact articulated wooden coaster train and timber rails",
+        color: 11827711, frame: 7696747, gauge: .86, seats: 2, rows: 2, spacing: 2.54, hang: !1, style: "wood", nose: .6, cars: 6
+    }
+    , zamperlafamily: {
+        name: "Zamperla Family Coaster",
+        detail: "Short compact family train with tubular steel rails",
+        color: 15777024, frame: 5263440, gauge: .72, seats: 2, rows: 2, spacing: 2.1, hang: !1, style: "tube", nose: .5, cars: 5
+    }
+    , intaminprefab: {
+        name: "Intamin Prefab Wood",
+        detail: "Steel-supported prefabricated wooden track and articulated train",
+        color: 15389114, frame: 6579300, gauge: .9, seats: 2, rows: 2, spacing: 2.7, hang: !1, style: "wood", nose: .7, cars: 5
+    }
 }
   , cc = i => i === "arrow4d" || i === "axis"
   , Li = () => ({
@@ -22342,6 +22412,8 @@ function rm(i) {
     const G = new Bt;
     t.add(G);
     const Y = new Map;
+    const rideRaycaster = new cd();
+    const ridePointer = new Ze();
     let te = [];
     function L(W, re, he, ee, ae, w, ce, _e, Pe) {
         const xe = new tn(re,he);
@@ -22620,7 +22692,7 @@ function rm(i) {
                     L(ae, In, c, oe - .085, -.1, A + me * .066, .096, .094, .096).rotation.x = Math.PI / 2
                 }
         }
-        if (W === "axis" || W === "spinning") {
+        if (W === "axis" || W === "spinning" || W === "maurerspin") {
             const De = W === "axis";
             ce(2.07);
             const oe = new Bt;
@@ -22650,6 +22722,36 @@ function rm(i) {
             }
             return ae
         }
+        if (W === "bmwing") {
+            ce(2.48);
+            L(ae, Dt, ee.shell, -.08, .29, 0, 1.16, .27, .78);
+            L(ae, Ke, ee.frame, -.08, .47, 0, .48, .2, .54);
+            for (const side of [-1, 1]) {
+                L(ae, Ke, ee.frame, -.02, .43, side * .73, .25, .17, .76);
+                for (const row of [-.34, .34]) {
+                    w(ae, row, .62, side * 1.12, !0);
+                    L(ae, Ke, ee.shell, row + .14, .3, side * 1.12, .34, .16, .38);
+                }
+            }
+            return ae;
+        }
+        if (W === "bmfloorless" || W === "bmstandup") {
+            ce(2.32);
+            L(ae, Ke, ee.frame, -.05, .18, 0, 1.18, .16, .76);
+            L(ae, Dt, ee.shell, -.03, .31, 0, 1.28, .22, .8);
+            for (let seat = 0; seat < he.seats; seat++) {
+                const z = (seat - (he.seats - 1) * .5) * .61;
+                L(ae, Ke, d, -.34, .53, z, .48, .12, .48);
+                L(ae, Ke, d, -.58, .83, z, .16, W === "bmstandup" ? .88 : .68, .48).rotation.z = .1;
+                if (W === "bmstandup") {
+                    L(ae, Ke, p, -.23, 1.12, z, .12, .48, .42);
+                    L(ae, Ke, p, -.12, .88, z, .42, .09, .08);
+                } else {
+                    for (const side of [-1, 1]) L(ae, Ke, p, -.2, .88, z + side * .2, .38, .09, .07).rotation.z = -.32;
+                }
+            }
+            return ae;
+        }
         if (W === "arrow4d") {
             ce(1.68),
             L(ae, Dt, ee.shell, .11, .31, 0, 1, .27, .81),
@@ -22669,7 +22771,7 @@ function rm(i) {
             }
             return ae
         }
-        if (["ptc", "gci", "accelerator", "ibox", "topper", "raptor"].includes(W)) {
+        if (["ptc", "gci", "accelerator", "intaminblitz", "ibox", "topper", "raptor", "gravitywood", "intaminprefab"].includes(W)) {
             const De = W === "ptc"
               , oe = W === "gci"
               , me = W === "accelerator"
@@ -22820,6 +22922,19 @@ function rm(i) {
                 L(re, Ke, E, 0, .73 + he * .14, -.26, 1.91, .12, .07)
         }
     }
+    function pickRideAt(clientX, clientY, camera, canvas) {
+        const rect = canvas.getBoundingClientRect();
+        if (!rect.width || !rect.height) return null;
+        ridePointer.set(((clientX - rect.left) / rect.width) * 2 - 1, 1 - ((clientY - rect.top) / rect.height) * 2);
+        rideRaycaster.setFromCamera(ridePointer, camera);
+        let picked = null, nearest = Infinity;
+        for (const [id, ride] of Y.entries()) {
+            if (!ride.tracks) continue;
+            const hits = rideRaycaster.intersectObject(ride.tracks, true);
+            if (hits.length && hits[0].distance < nearest) { nearest = hits[0].distance; picked = id; }
+        }
+        return picked;
+    }
     function highlightRide(id, active) {
         const ride = Y.get(id);
         if (!ride) return;
@@ -22842,6 +22957,7 @@ function rm(i) {
     return {
         renderer: e,
         highlight: highlightRide,
+        pickRide: (x,y) => pickRideAt(x,y,r,i),
         camera: r,
         scene: t,
         update: Re,
@@ -22858,6 +22974,9 @@ function rm(i) {
         addScenery: We,
         undoScenery() {
             G.children.at(-1)?.removeFromParent()
+        },
+        clearScenery() {
+            for (const child of [...G.children]) child.removeFromParent();
         },
         ground(W, re, he, ee) {
             o.material.uniforms.center.value.set(W, re),
@@ -22965,7 +23084,7 @@ const Ri = "timberline-park-v2"
   , vn = {
     length: {
         title: "Length",
-        glyph: "â†”",
+        glyph: "LEN",
         x: 66,
         y: 43,
         dx: .86,
@@ -22973,7 +23092,7 @@ const Ri = "timberline-park-v2"
     },
     turn: {
         title: "Curve",
-        glyph: "â†ª",
+        glyph: "TURN",
         x: -67,
         y: 38,
         dx: 1,
@@ -22981,7 +23100,7 @@ const Ri = "timberline-park-v2"
     },
     pitch: {
         title: "Slope",
-        glyph: "â†•",
+        glyph: "PITCH",
         x: -58,
         y: -42,
         dx: 0,
@@ -22989,7 +23108,7 @@ const Ri = "timberline-park-v2"
     },
     bank: {
         title: "Bank",
-        glyph: "âŸ³",
+        glyph: "BANK",
         x: 61,
         y: -43,
         dx: 1,
@@ -23009,7 +23128,7 @@ function om(i, e) {
     t.innerHTML = `
     <canvas id="park" tabindex="0" aria-label="Interactive 3D coaster park"></canvas>
     <header class="mast" data-combos-ui-region="hud" data-combos-ui-id="park-title">
-      <button id="hamburger" class="hamburger" aria-label="Open park menu" title="Park menu">â˜°</button><span class="eyebrow">Coaster Editor</span><h1>Spire Parks <em>2</em></h1><small id="park-name-label">UNTITLED PARK</small><small id="park-count">EMPTY PARK</small>
+      <button id="hamburger" class="hamburger" aria-label="Open park menu" title="Park menu">MENU</button><span class="eyebrow">COASTER DESIGN LAB / 02</span><h1>Spire Parks <em>2</em></h1><small id="park-name-label">UNTITLED PARK</small><small id="park-count">EMPTY PARK</small>
     </header>
     <div id="marker" aria-hidden="true"><b>+</b><span>STATION SITE</span></div>
     <div id="gizmo" aria-label="Track-end editing handles" hidden>
@@ -23022,16 +23141,16 @@ function om(i, e) {
     <nav class="nav" data-combos-ui-region="controls" data-combos-ui-id="camera-tools" aria-label="Camera tools">
       <button id="focus" aria-label="Focus editor (F)" title="Focus editor (F)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></button>
       <button id="view" aria-label="Change camera (T)" title="Change camera (T)">View</button>
-      <button id="physics" aria-label="Park physics" title="Park physics">âš™</button><button id="record-pov" aria-label="Record POV video" title="Record POV video">â— REC</button>
-      <button id="place-station" aria-label="Enter station placement mode" title="Place a new station">ï¼‹ Station</button>
-      <button id="share-code" aria-label="Export park code" title="Export compressed park code">â‡§ Code</button>
+      <button id="physics" aria-label="Park physics" title="Park physics">SETTINGS</button><button id="record-pov" aria-label="Generate and download a POV video" title="Automatically generate and download a POV video">GENERATE POV</button>
+      <button id="place-station" aria-label="Enter station placement mode" title="Place a new station">NEW STATION</button>
+      <button id="share-code" aria-label="Export park code" title="Export compressed park code">SAVE CODE</button>
       <button id="help" aria-label="Controls and track guide">?</button>
     </nav>
     <div class="legend" data-combos-ui-region="text" data-combos-ui-id="shortcuts" data-combos-ui-critical="false">DRAG to pan Â· RIGHT DRAG to orbit Â· SCROLL to zoom</div>
     <section class="workbench" data-combos-ui-region="controls" data-combos-ui-id="track-workbench" aria-label="Track builder">
-      <div class="bench-head"><div><label id="mode">STATION PLACEMENT</label><h2 id="title">Start a coaster</h2></div><div class="bench-tools"><button id="manage" class="secondary">Tools</button><button id="new" class="secondary">ï¼‹ New</button></div></div>
-      <div id="setup" class="row"><label class="picker">Train model<select id="model">${uc.map(P => `<option value="${P}">${Ct[P].name}</option>`).join("")}</select></label><button id="rotate" class="secondary" title="Rotate station by 45 degrees">â†» 0Â°</button></div><div id="model-cards" class="model-cards">${uc.map(P => `<button type="button" class="model-card" data-model="${P}"><b>${Ct[P].name}</b><small>${Ct[P].detail}</small></button>`).join("")}</div>
-      <div id="editing" class="row" hidden><div class="coaster-picker"><span class="picker-label">Coasters in this park</span><div id="coaster-list" class="coaster-list"></div><select id="rides" aria-label="Select coaster" hidden></select></div><label class="picker">Next piece<select id="kind">${dc.map(P => `<option value="${P}">${tr[P]}</option>`).join("")}</select></label></div>
+      <div class="bench-head"><div><label id="mode">STATION PLACEMENT</label><h2 id="title">Start a coaster</h2></div><div class="bench-tools"><button id="manage" class="secondary">Tools</button><button id="new" class="secondary">NEW COASTER</button></div></div>
+      <div id="setup" class="row"><label class="picker">Train model<select id="model">${uc.map(P => `<option value="${P}">${Ct[P].name}</option>`).join("")}</select></label><button id="rotate" class="secondary" title="Rotate station by 45 degrees">ROTATE 0Â°</button></div><div id="model-cards" class="model-cards">${uc.map(P => `<button type="button" class="model-card" data-model="${P}" data-style="${Ct[P].style}"><b>${Ct[P].name}</b><small>${Ct[P].detail}</small></button>`).join("")}</div>
+      <div id="editing" class="row" hidden><label class="picker">Next piece<select id="kind">${dc.map(P => `<option value="${P}">${tr[P]}</option>`).join("")}</select></label><select id="rides" aria-label="Selected coaster" hidden></select></div>
       <div id="train-settings" class="train-settings" hidden>
         <label>Cars per train <input id="train-cars" type="number" min="1" step="1" value="5"></label>
         <label>Train count target <input id="train-count" type="number" min="1" max="6" step="1" value="1"></label>
@@ -23042,7 +23161,7 @@ function om(i, e) {
         <label id="speed-control" class="tuning"><span id="speed-name">Target speed</span><input id="piece-speed" type="number" step="1" inputmode="numeric" /><span>mph</span></label>
         <label id="rotation-control" class="tuning"><span id="rotation-name">Seat rotation</span><input id="seat-rotation" type="range" min="-360" max="360" step="5" /><output id="rotation-value" for="seat-rotation">0Â°</output></label>
       </div>
-      <div class="actions" id="actions"><button id="undo" class="action" title="Undo (Ctrl+Z)">â†¶ Undo</button><button id="close" class="action close">Connect</button><button id="test" class="action test">â–¶ Test</button><button id="commit" class="action primary" data-combos-action="primary">Place Station</button></div>
+      <div class="actions" id="actions"><button id="undo" class="action" title="Undo (Ctrl+Z)">UNDO</button><button id="close" class="action close">Connect</button><button id="test" class="action test">TEST</button><button id="commit" class="action primary" data-combos-action="primary">Place Station</button></div>
       <p class="status" id="status" aria-live="polite"></p>
     </section>
     <section id="title-screen" class="title-screen" aria-label="Spire Parks 2 title screen">
@@ -23050,7 +23169,7 @@ function om(i, e) {
       <div class="title-content">
         <img class="title-logo" src="./assets/spire-logo.png" alt="Spire Parks 2">
         <p class="title-kicker">YOUR PARK. YOUR RULES. YOUR NEXT BIG THRILL.</p>
-        <button id="start-game" class="title-start">START BUILDING <span>â–¶</span></button>
+        <button id="start-game" class="title-start">START BUILDING</button>
         <button id="continue-game" class="title-secondary">CONTINUE PARK</button>
         <div class="title-import"><input id="import-code" placeholder="Paste a park code..." aria-label="Park code"><button id="import-park">IMPORT</button></div>
         <small>OFFLINE PARK BUILDING Â· NO ACCOUNT REQUIRED</small>
@@ -23072,11 +23191,11 @@ function om(i, e) {
     </dialog>
     <dialog id="delete-dialog" aria-labelledby="delete-title" data-combos-ui-region="modal" data-combos-ui-id="confirm-delete"><h2 id="delete-title">Delete this coaster?</h2><p id="delete-copy"></p><footer><button id="delete-cancel">Cancel</button><button id="delete-confirm">Delete</button></footer></dialog>
     <dialog id="guide" data-combos-ui-region="modal" data-combos-ui-id="control-guide"><h2>Build & test</h2>
-      <p><strong>Place a station.</strong> Pick a model, then tap the terrain or use Place Station. The New button starts another coaster; the Coaster menu switches between rides.</p>
+      <p><strong>Place a station.</strong> Pick a model, then tap the terrain or use Place Station. Click a coaster's actual track in the 3D park to select it; the track highlights when your pointer is over it. The New Coaster button starts another ride.</p>
       <p><strong>Drag the track-end handles or tap one to type an exact value.</strong> Length is shown in feet, Curve turns the piece, Slope raises or lowers it, Bank rotates the rails, and Heartline pivot offsets the track from its roll axis. Tab to a handle and use arrow keys for fine changes. F brings the editor back into view.</p>
       <p><strong>Build below ground.</strong> Tunnels form automatically. Open Tools to paint entire tracks or individual pieces, place scenery, or delete a ride.</p>
       <p><strong>Keep your speed.</strong> Gravity moves the train. Pick chain lift for climbs, boosters for launches, drive tires for slow sections, or brakes to slow it. Test telemetry shows G-forces and an estimated sickness score.</p>
-      <p><strong>Camera:</strong> Drag to pan, right-drag or two-finger drag to orbit, and scroll or pinch to zoom. Tests start outside; tap POV or press T to ride. WASD moves the camera, Enter builds, and Ctrl+Z undoes.</p>
+      <p><strong>Camera:</strong> Drag to pan, right-drag or two-finger drag to orbit, and scroll or pinch to zoom. Tests start outside; tap POV or press T to ride. Generate POV automatically runs the test, records from the rider's view, and downloads the video when the ride ends. WASD moves the camera, Enter builds, and Ctrl+Z undoes.</p>
       <footer><button id="done">Done</button></footer>
     </dialog>
     <dialog id="physics-dialog" aria-labelledby="physics-title" data-combos-ui-region="modal" data-combos-ui-id="physics-settings">
@@ -23119,7 +23238,7 @@ function om(i, e) {
       , E = new Set
       , R = []
       , F = [];
-    let S;
+    let S, hoveredRideId;
     const M = new Map
       , U = new cd
       , B = new Nn(new O(0,1,0),0);
@@ -23193,15 +23312,15 @@ function om(i, e) {
         s("kind").value = L.kind,
         s("kind").disabled = P || !!D?.closed,
         s("rides").value = D?.id ?? "",
-        r("new").textContent = G && D ? "Cancel" : "ï¼‹ New",
+        r("new").textContent = G && D ? "CANCEL" : "NEW COASTER",
         r("new").hidden = G && !D,
-        r("rotate").textContent = `â†» ${Math.round(te * 180 / Math.PI)}Â°`,
+        r("rotate").textContent = `ROTATE ${Math.round(te * 180 / Math.PI)}Â°`,
         r("undo").disabled = P || !D?.pieces.length,
         r("close").disabled = P || (D?.pieces.length ?? 0) < 2,
         r("close").textContent = D?.closed ? "Reopen" : "Connect",
         r("test").disabled = !D?.pieces.length,
-        r("test").textContent = P ? pe?.outcome === "running" ? "â–  Stop" : "Done" : "â–¶ Test",
-        r("commit").textContent = G ? "Place Station" : "ï¼‹ Build",
+        r("test").textContent = P ? pe?.outcome === "running" ? "STOP TEST" : "DONE" : "TEST",
+        r("commit").textContent = G ? "PLACE STATION" : "BUILD PIECE",
         r("commit").disabled = !G && (P || !!D?.closed),
         S) {
             r("commit").textContent = "Place scenery",
@@ -23218,7 +23337,6 @@ function om(i, e) {
         }
         r("place-station").classList.toggle("active", G);
         if (n("park-name") && document.activeElement !== n("park-name")) n("park-name").value = parkName;
-        if (n("coaster-list")) for (const card of n("coaster-list").children) card.classList.toggle("selected", card.dataset.ride === D?.id);
         if (n("model-cards")) for (const card of n("model-cards").children) card.classList.toggle("selected", card.dataset.model === Y);
         const H = !G && !P && !D?.closed
           , K = L.kind === "lift" || L.kind === "boost" ? L.kind : void 0
@@ -23239,7 +23357,7 @@ function om(i, e) {
         Oe && (n("rotation-name").textContent = D?.model === "axis" ? "Seat roll" : "Seat pitch",
         m("seat-rotation").value = String(L.rotation ?? 0),
         n("rotation-value").textContent = `${L.rotation ?? 0}Â°`),
-        r("view").textContent = P ? Je ? "Exit POV" : "POV" : "View",
+        r("view").textContent = P ? Je ? "EXIT POV" : "POV" : "VIEW",
         r("view").disabled = pe?.outcome === "derailed";
         for (const qe of zr) {
             const ut = !!S
@@ -23250,9 +23368,8 @@ function om(i, e) {
         }
     }
     function $() {
-        s("rides").replaceChildren(...R.map((P,H) => new Option(`${H+1} Â· ${P.name || Ct[P.model].name}`,P.id)));
-        const list = n("coaster-list");
-        if (list) list.replaceChildren(...R.map((ride,index) => { const button=document.createElement("button"); button.type="button"; button.className="coaster-card"+(D?.id===ride.id?" selected":""); button.dataset.ride=ride.id; button.innerHTML=`<b>${(ride.name || Ct[ride.model].name).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]))}</b><small>${Ct[ride.model].name} Â· ${ride.trainCars ?? Ct[ride.model].cars} cars</small>`; button.addEventListener("pointerenter",()=>f.highlight(ride.id,true)); button.addEventListener("pointerleave",()=>f.highlight(ride.id,false)); button.addEventListener("click",()=>{ if(pe) I(); D=ride; G=false; L=Li(); fe=true; de(true); N(); x("Coaster selected."); }); return button; }));
+        s("rides").replaceChildren(...R.map((ride,index) => new Option(`${index+1} - ${ride.name || Ct[ride.model].name}`,ride.id)));
+        s("rides").value = D?.id ?? "";
     }
     const ie = P => `#${Ct[P.model].color.toString(16).padStart(6, "0")}`;
     function j() {
@@ -23395,6 +23512,7 @@ function om(i, e) {
         x(D.closed ? "Circuit connected. Run a gravity test." : "Circuit reopened.", "good"))
     }
     function I() {
+        if (autoPovRecorder?.state === "recording") finishAutoPov();
         !pe || !D || (Xe?.dispose(),
         Xe = void 0,
         pe = void 0,
@@ -23485,6 +23603,21 @@ function om(i, e) {
         T.elevation = W ? 1.53 : .77))
     }
     function rt(P) {
+        if (!G && !S && !pe) {
+            const pickedId = f.pickRide(P.clientX, P.clientY);
+            if (pickedId) {
+                const pickedRide = R.find(ride => ride.id === pickedId);
+                if (pickedRide) {
+                    hoveredRideId = pickedId;
+                    if (D?.id !== pickedId) {
+                        if (pe) I();
+                        D = pickedRide; G = false; L = Li(); fe = true;
+                        de(true); N(); x(`${D.name || Ct[D.model].name} selected.`);
+                    }
+                    return;
+                }
+            }
+        }
         const H = a.getBoundingClientRect();
         U.setFromCamera(new Ze((P.clientX - H.left) / H.width * 2 - 1,1 - (P.clientY - H.top) / H.height * 2), f.camera);
         const K = U.ray.intersectPlane(B, new O);
@@ -23536,7 +23669,8 @@ function om(i, e) {
                     it = P),
                     N();
                     const Oe = pe.outcome;
-                    x(am[Oe], Oe === "station" ? "good" : "error")
+                    x(am[Oe], Oe === "station" ? "good" : "error");
+                    if (autoPovRecorder?.state === "recording") setTimeout(finishAutoPov, 700)
                 } else if (P - ae > 180) {
                     Nt(pe),
                     ae = P;
@@ -23698,22 +23832,49 @@ function om(i, e) {
         me(); x(`${D.trainCount} train${D.trainCount === 1 ? "" : "s"} configured for this ride.`, "good");
     }, { signal: b });
 
-    let povRecorder = null, povChunks = [];
-    nt("record-pov", () => {
-        const button = n("record-pov");
-        if (povRecorder && povRecorder.state === "recording") { povRecorder.stop(); button.textContent = "â— REC"; return; }
-        if (!pe || !Je) { x("Start a coaster test and enter POV before recording.", "error"); return; }
-        const canvas = f.renderer.domElement;
-        if (!canvas.captureStream || !window.MediaRecorder) { x("Video recording is not supported in this browser.", "error"); return; }
+    let autoPovRecorder = null, autoPovChunks = [], autoPovStream = null;
+    const povButton = n("record-pov");
+    const finishAutoPov = () => {
+        if (autoPovRecorder && autoPovRecorder.state === "recording") autoPovRecorder.stop();
+    };
+    const startAutoPov = () => {
+        if (!D?.pieces.length) { x("Build at least one track piece before generating a POV video.", "error"); return; }
+        if (!window.MediaRecorder || !f.renderer.domElement.captureStream) { x("This browser does not support automatic POV video export.", "error"); return; }
+        if (pe) I();
         try {
-            const stream = canvas.captureStream(60);
-            const mime = ["video/webm;codecs=vp9","video/webm;codecs=vp8","video/webm"].find(type => MediaRecorder.isTypeSupported(type));
-            povChunks = []; povRecorder = new MediaRecorder(stream, mime ? {mimeType:mime} : undefined);
-            povRecorder.ondataavailable = event => { if (event.data?.size) povChunks.push(event.data); };
-            povRecorder.onstop = () => { const blob = new Blob(povChunks,{type:povRecorder.mimeType || "video/webm"}); const url=URL.createObjectURL(blob); const link=document.createElement("a"); link.href=url; link.download=`${(D?.name || "spire-coaster").replace(/[^a-z0-9-_]+/gi,"-")}-pov.webm`; link.click(); setTimeout(()=>URL.revokeObjectURL(url),30000); stream.getTracks().forEach(track=>track.stop()); x("POV video saved.","good"); };
-            povRecorder.start(250); button.textContent = "â–  STOP"; x("Recording POV videoâ€¦ click STOP when finished.","good");
-        } catch (error) { x("Could not start video recording: "+error.message,"error"); }
-    });
+            autoPovChunks = [];
+            ve();
+            Je = true; Q = false; ce = true;
+            autoPovStream = f.renderer.domElement.captureStream(60);
+            const mime = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"].find(type => MediaRecorder.isTypeSupported(type));
+            autoPovRecorder = new MediaRecorder(autoPovStream, mime ? {mimeType:mime} : undefined);
+            autoPovRecorder.ondataavailable = event => { if (event.data?.size) autoPovChunks.push(event.data); };
+            autoPovRecorder.onerror = () => { x("The browser could not finish the POV recording.", "error"); };
+            autoPovRecorder.onstop = () => {
+                const blob = new Blob(autoPovChunks, {type:autoPovRecorder?.mimeType || "video/webm"});
+                if (blob.size) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement("a");
+                    const safeName = (D?.name || Ct[D?.model] ?.name || "spire-coaster").replace(/[^a-z0-9-_]+/gi,"-");
+                    link.href = url; link.download = `${safeName}-pov.webm`; link.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 30000);
+                    x("POV video generated and downloaded.", "good");
+                } else x("The POV video was empty. Try generating it again.", "error");
+                autoPovStream?.getTracks().forEach(track => track.stop());
+                autoPovStream = null; autoPovRecorder = null;
+                povButton.textContent = "GENERATE POV"; povButton.disabled = false;
+            };
+            autoPovRecorder.start(250);
+            povButton.textContent = "GENERATING POV"; povButton.disabled = true;
+            x("Running the coaster automatically and generating its POV videoâ€¦", "good");
+        } catch (error) {
+            autoPovStream?.getTracks().forEach(track => track.stop());
+            autoPovStream = null; autoPovRecorder = null;
+            povButton.textContent = "GENERATE POV"; povButton.disabled = false;
+            x("Could not generate POV video: " + error.message, "error");
+        }
+    };
+    nt("record-pov", startAutoPov);
     nt("undo", Ee),
     nt("close", Ve),
     nt("test", ve),
@@ -23892,6 +24053,23 @@ function om(i, e) {
         passive: !1,
         signal: b
     }),
+    a.addEventListener("pointermove", P => {
+        if (C.size || G || S || pe) {
+            if (hoveredRideId) f.highlight(hoveredRideId, false);
+            hoveredRideId = void 0;
+            return;
+        }
+        const pickedId = f.pickRide(P.clientX, P.clientY);
+        if (pickedId !== hoveredRideId) {
+            if (hoveredRideId) f.highlight(hoveredRideId, false);
+            hoveredRideId = pickedId || void 0;
+            if (hoveredRideId) f.highlight(hoveredRideId, true);
+        }
+    }, {signal:b});
+    a.addEventListener("pointerleave", () => {
+        if (hoveredRideId) f.highlight(hoveredRideId, false);
+        hoveredRideId = void 0;
+    }, {signal:b});
     a.addEventListener("pointerdown", P => {
         if ([0, 1, 2].includes(P.button) && (P.preventDefault(),
         a.setPointerCapture(P.pointerId),
@@ -23933,7 +24111,7 @@ function om(i, e) {
     }),
     a.addEventListener("pointerup", P => {
         const H = C.get(P.pointerId);
-        (G || S) && H && !H.multi && !H.moved && P.button === 0 && rt(P),
+        H && !H.multi && !H.moved && P.button === 0 && rt(P),
         C.delete(P.pointerId)
     }
     , {
@@ -24049,15 +24227,24 @@ function om(i, e) {
         try {
             const data = await decodePark(m("import-code").value);
             if (!data || data.v !== 2 || !Array.isArray(data.rides) || !Array.isArray(data.scenery)) throw new Error("Invalid park data");
-            R.splice(0, R.length, ...data.rides);
-            F.splice(0, F.length, ...data.scenery);
+            const ridesAreValid = data.rides.every(ride => ride && typeof ride.id === "string" && uc.includes(ride.model) && [ride.x, ride.z, ride.angle].every(Number.isFinite) && Array.isArray(ride.pieces) && ride.pieces.every(piece => piece && dc.includes(piece.kind) && zr.every(axis => Number.isFinite(piece[axis]))));
+            const sceneryIsValid = data.scenery.every(item => item && Object.hasOwn(Br, item.kind) && [item.x, item.z, item.yaw].every(Number.isFinite));
+            if (!ridesAreValid || !sceneryIsValid) throw new Error("This park code contains invalid coaster or scenery data. Your current park was left unchanged.");
+            if (pe) I();
+            S = void 0;
+            for (const existingRide of R) f.remove(existingRide.id);
+            f.clearScenery();
+            R.length = 0; F.length = 0; M.clear();
+            D = void 0; G = true; L = Li(); hoveredRideId = void 0;
+            R.push(...data.rides);
+            F.push(...data.scenery);
             parkName = String(data.parkName || "Untitled Park").slice(0,48);
             for (const ride of R) {
                 ride.trainCars = Math.max(1, Math.round(Number(ride.trainCars) || Ct[ride.model]?.cars || 5));
                 ride.trainCount ??= 1;
                 Ae(ride);
             }
-            me(); N(); startTitle(); x("Park imported successfully.", "good");
+            me(); N(); startTitle(); m("import-code").value = ""; x("Park imported successfully. Previous park cleared.", "good");
         } catch (err) { x(err.message || "Could not import that code.", "error"); }
     });
     const ht = e.registerAction("primary", Ne, {
