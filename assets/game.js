@@ -23442,7 +23442,7 @@ function om(i, e) {
         <button id="start-game" class="title-start">START DESIGNING</button>
         <button id="continue-game" class="title-secondary">CONTINUE PARK</button>
         <div class="title-import"><input id="import-code" placeholder="Paste a park code..." aria-label="Park code"><button id="import-park">IMPORT</button></div>
-        <small>v1.5</small>
+        <small>v1.7</small>
       </div>
       <div class="title-footer"><span>SPIRE PARKS 2</span><span>DESIGN  |  BUILD  |  RIDE</span><span>v2.1</span></div>
     </section>
