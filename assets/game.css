@@ -1207,3 +1207,85 @@ button, .nav button, .action, .secondary, .hamburger { font-family: Inter, "Treb
 .model-card[data-style="tri"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 35 Q12 33 16 10 T38 15' fill='none' stroke='%23f2b77b' stroke-width='3'/%3E%3Cpath d='M5 39 L35 39 L20 24 Z' fill='none' stroke='%23c7d6ca' stroke-width='1.5'/%3E%3C/svg%3E"); }
 .model-card[data-style="ibox"]::before, .model-card[data-style="topper"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 35 Q12 33 16 9 T38 15' fill='none' stroke='%239cf0d6' stroke-width='3'/%3E%3Cpath d='M3 39 L37 39 M7 39 L13 29 M28 39 L34 27 M8 39 L34 29' stroke='%23c7d6ca' stroke-width='1.8'/%3E%3C/svg%3E"); }
 @media (max-width:520px) { #record-pov { min-width: 100px; } .nav button { font-size: 9px; } }
+
+/* Compact, color-coded track editing handles */
+.axis {
+  width: 38px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  box-shadow: 0 2px 7px #06121dcc, inset 0 1px #ffffff24 !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+.axis i {
+  display: block;
+  font: 800 19px/1 system-ui, sans-serif !important;
+  color: currentColor !important;
+}
+.axis span { display: none !important; }
+.axis.pitch { --axis-color: #68d8ff; }
+.axis.turn { --axis-color: #ffc36c; }
+.axis.length { --axis-color: #85f0a0; }
+.axis.bank { --axis-color: #f39be1; }
+
+/* Model picker cards show a track-and-train illustration instead of a generic icon */
+.model-card {
+  min-height: 126px !important;
+  padding: 7px 9px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 4px !important;
+  overflow: hidden;
+}
+.model-card::before { display: none !important; }
+.model-card-art {
+  display: block;
+  width: 100%;
+  height: 70px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: linear-gradient(180deg,#12243b,#1c3550);
+  border: 1px solid #7894b55a;
+}
+.model-art { display: block; width: 100%; height: 100%; }
+.model-art .art-rail {
+  fill: none;
+  stroke: #b9e9f3;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+.model-art .art-spine {
+  fill: none;
+  stroke: #92a8c1;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.model-art .art-ties {
+  fill: none;
+  stroke: #d3e2f0;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.model-art .art-train path { fill: #f2b95f; stroke: #fff0c8; stroke-width: 1; }
+.model-art .art-train rect { fill: #29445f; stroke: #c5efff; stroke-width: .7; }
+.model-art .art-train circle { fill: #101d2d; stroke: #d9e6f1; stroke-width: 1; }
+.model-card b { font-size: 11px !important; }
+.model-card small { font-size: 9px !important; line-height: 1.25 !important; }
+.model-card[data-style="wood"] .model-card-art { background: linear-gradient(180deg,#2e241d,#57402d); }
+.model-card[data-style="wood"] .model-art .art-rail { stroke: #e7c08c; stroke-width: 4.2; }
+.model-card[data-style="wood"] .model-art .art-spine { stroke: #a87549; stroke-width: 6; }
+.model-card[data-connector="bm-wave"] .model-art .art-ties { stroke: #a9e7f0; stroke-width: 2.8; }
+.model-card[data-connector="arrow-inset"] .model-art .art-ties { stroke: #f4c58c; stroke-width: 2.7; }
+.model-card[data-connector*="lattice"] .model-art .art-ties,
+.model-card[data-connector*="truss"] .model-art .art-ties { stroke: #a8d4ff; stroke-width: 2.2; }
+@media(max-width:520px) {
+  .model-card { min-height: 116px !important; }
+  .model-card-art { height: 62px; }
+}
