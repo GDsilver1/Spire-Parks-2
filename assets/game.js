@@ -21939,35 +21939,35 @@ const tr = {
     }
 }
   , trackProfiles = {
-    invert:       {rail: .119, spineW: .62, spineH: .52, tieStep: 1.12, supportStep: 5.8, gaugeScale: 1.00, architecture: "B&M inverted box spine"},
-    hyper:        {rail: .126, spineW: .68, spineH: .56, tieStep: 1.18, supportStep: 6.6, gaugeScale: 1.02, architecture: "B&M wide box spine"},
-    arrow:        {rail: .105, spineW: .23, spineH: .21, tieStep: 1.05, supportStep: 5.4, gaugeScale: .96, architecture: "Arrow tubular spine"},
-    dive:         {rail: .145, spineW: .82, spineH: .66, tieStep: 1.06, supportStep: 5.0, gaugeScale: 1.12, architecture: "B&M oversized dive box"},
-    launch:       {rail: .112, spineW: .30, spineH: .31, tieStep: .98, supportStep: 5.4, gaugeScale: .98, architecture: "Triangular launch spine"},
-    wood:         {rail: .105, spineW: .18, spineH: .16, tieStep: .62, supportStep: 3.0, gaugeScale: 1.00, architecture: "Timber track and cross-ties"},
-    ptc:          {rail: .112, spineW: .20, spineH: .18, tieStep: .72, supportStep: 2.9, gaugeScale: 1.02, architecture: "Classic three-bench timber track"},
-    gci:          {rail: .098, spineW: .17, spineH: .15, tieStep: .54, supportStep: 2.6, gaugeScale: .98, architecture: "Articulated wooden track"},
-    accelerator:  {rail: .116, spineW: .34, spineH: .30, tieStep: 1.02, supportStep: 5.8, gaugeScale: 1.00, architecture: "Intamin launch spine"},
-    ibox:         {rail: .122, spineW: .40, spineH: .22, tieStep: .92, supportStep: 4.8, gaugeScale: 1.02, architecture: "RMC twin IBox rails"},
-    topper:       {rail: .126, spineW: .25, spineH: .20, tieStep: .78, supportStep: 3.8, gaugeScale: 1.00, architecture: "RMC topper steel caps"},
-    raptor:       {rail: .158, spineW: .36, spineH: .34, tieStep: 1.35, supportStep: 5.1, gaugeScale: .90, architecture: "RMC single-rail spine"},
-    arrow4d:      {rail: .116, spineW: .29, spineH: .27, tieStep: 1.14, supportStep: 5.6, gaugeScale: 1.00, architecture: "Four-rail 4D chassis track"},
-    axis:         {rail: .132, spineW: .42, spineH: .40, tieStep: 1.28, supportStep: 5.2, gaugeScale: 1.06, architecture: "Circular S&S Axis carrier"},
-    spinning:     {rail: .108, spineW: .24, spineH: .23, tieStep: 1.02, supportStep: 4.7, gaugeScale: .98, architecture: "Compact spinning coaster rails"},
-    bmfloorless:  {rail: .121, spineW: .58, spineH: .49, tieStep: 1.08, supportStep: 5.9, gaugeScale: 1.00, architecture: "B&M floorless box spine"},
-    bmwing:       {rail: .135, spineW: .74, spineH: .58, tieStep: 1.22, supportStep: 6.1, gaugeScale: 1.12, architecture: "B&M wing wide box spine"},
-    bmstandup:    {rail: .117, spineW: .56, spineH: .47, tieStep: 1.10, supportStep: 5.7, gaugeScale: .99, architecture: "B&M stand-up box spine"},
-    bmgiga:       {rail: .139, spineW: .72, spineH: .60, tieStep: 1.28, supportStep: 6.8, gaugeScale: 1.08, architecture: "B&M giga-scale box spine"},
-    vekomaslc:    {rail: .112, spineW: .46, spineH: .39, tieStep: .96, supportStep: 4.9, gaugeScale: .98, architecture: "Vekoma suspended box spine"},
-    vekomanext:   {rail: .119, spineW: .50, spineH: .42, tieStep: 1.02, supportStep: 5.1, gaugeScale: 1.00, architecture: "Vekoma modern box spine"},
-    intaminblitz: {rail: .124, spineW: .34, spineH: .30, tieStep: .94, supportStep: 5.3, gaugeScale: .99, architecture: "Intamin Blitz launch chassis"},
-    macklaunch:   {rail: .118, spineW: .31, spineH: .25, tieStep: .88, supportStep: 5.0, gaugeScale: 1.04, architecture: "Mack tubular launch rails"},
-    gerstlauer:   {rail: .116, spineW: .43, spineH: .36, tieStep: .90, supportStep: 4.6, gaugeScale: .95, architecture: "Gerstlauer compact box spine"},
-    premierlim:   {rail: .113, spineW: .27, spineH: .24, tieStep: .86, supportStep: 4.8, gaugeScale: .97, architecture: "Premier tubular LIM rails"},
-    maurerspin:   {rail: .106, spineW: .22, spineH: .21, tieStep: .84, supportStep: 4.4, gaugeScale: .94, architecture: "Maurer compact spinner rails"},
-    gravitywood:  {rail: .108, spineW: .19, spineH: .17, tieStep: .58, supportStep: 2.8, gaugeScale: 1.01, architecture: "Gravity Group timber track"},
-    zamperlafamily:{rail: .102, spineW: .21, spineH: .19, tieStep: .82, supportStep: 4.1, gaugeScale: .92, architecture: "Zamperla family tubular rails"},
-    intaminprefab:{rail: .119, spineW: .24, spineH: .21, tieStep: .70, supportStep: 3.4, gaugeScale: 1.03, architecture: "Intamin prefabricated timber track"}
+    invert:       {rail: .119, spineW: .62, spineH: .52, tieStep: 1.12, supportStep: 5.8, gaugeScale: 1.00, architecture: "B&M inverted box spine", connectorStyle: "bm-wave"},
+    hyper:        {rail: .126, spineW: .68, spineH: .56, tieStep: 1.18, supportStep: 6.6, gaugeScale: 1.02, architecture: "B&M wide box spine", connectorStyle: "bm-wave"},
+    arrow:        {rail: .105, spineW: .23, spineH: .21, tieStep: 1.05, supportStep: 5.4, gaugeScale: .96, architecture: "Arrow tubular spine", connectorStyle: "arrow-inset"},
+    dive:         {rail: .145, spineW: .82, spineH: .66, tieStep: 1.06, supportStep: 5.0, gaugeScale: 1.12, architecture: "B&M oversized dive box", connectorStyle: "bm-wave"},
+    launch:       {rail: .112, spineW: .30, spineH: .31, tieStep: .98, supportStep: 5.4, gaugeScale: .98, architecture: "Triangular launch spine", connectorStyle: "intamin-lattice"},
+    wood:         {rail: .105, spineW: .18, spineH: .16, tieStep: .62, supportStep: 3.0, gaugeScale: 1.00, architecture: "Timber track and cross-ties", connectorStyle: "wood-frame"},
+    ptc:          {rail: .112, spineW: .20, spineH: .18, tieStep: .72, supportStep: 2.9, gaugeScale: 1.02, architecture: "Classic three-bench timber track", connectorStyle: "wood-frame"},
+    gci:          {rail: .098, spineW: .17, spineH: .15, tieStep: .54, supportStep: 2.6, gaugeScale: .98, architecture: "Articulated wooden track", connectorStyle: "wood-frame"},
+    accelerator:  {rail: .116, spineW: .34, spineH: .30, tieStep: 1.02, supportStep: 5.8, gaugeScale: 1.00, architecture: "Intamin launch spine", connectorStyle: "intamin-lattice"},
+    ibox:         {rail: .122, spineW: .40, spineH: .22, tieStep: .92, supportStep: 4.8, gaugeScale: 1.02, architecture: "RMC twin IBox rails", connectorStyle: "ibox-web"},
+    topper:       {rail: .126, spineW: .25, spineH: .20, tieStep: .78, supportStep: 3.8, gaugeScale: 1.00, architecture: "RMC topper steel caps", connectorStyle: "topper-cap"},
+    raptor:       {rail: .158, spineW: .36, spineH: .34, tieStep: 1.35, supportStep: 5.1, gaugeScale: .90, architecture: "RMC single-rail spine", connectorStyle: "raptor-single"},
+    arrow4d:      {rail: .116, spineW: .29, spineH: .27, tieStep: 1.14, supportStep: 5.6, gaugeScale: 1.00, architecture: "Four-rail 4D chassis track", connectorStyle: "arrow-four"},
+    axis:         {rail: .132, spineW: .42, spineH: .40, tieStep: 1.28, supportStep: 5.2, gaugeScale: 1.06, architecture: "Circular S&S Axis carrier", connectorStyle: "axis-cage"},
+    spinning:     {rail: .108, spineW: .24, spineH: .23, tieStep: 1.02, supportStep: 4.7, gaugeScale: .98, architecture: "Compact spinning coaster rails", connectorStyle: "spinner-tube"},
+    bmfloorless:  {rail: .121, spineW: .58, spineH: .49, tieStep: 1.08, supportStep: 5.9, gaugeScale: 1.00, architecture: "B&M floorless box spine", connectorStyle: "bm-wave"},
+    bmwing:       {rail: .135, spineW: .74, spineH: .58, tieStep: 1.22, supportStep: 6.1, gaugeScale: 1.12, architecture: "B&M wing wide box spine", connectorStyle: "bm-wave"},
+    bmstandup:    {rail: .117, spineW: .56, spineH: .47, tieStep: 1.10, supportStep: 5.7, gaugeScale: .99, architecture: "B&M stand-up box spine", connectorStyle: "bm-wave"},
+    bmgiga:       {rail: .139, spineW: .72, spineH: .60, tieStep: 1.28, supportStep: 6.8, gaugeScale: 1.08, architecture: "B&M giga-scale box spine", connectorStyle: "bm-wave"},
+    vekomaslc:    {rail: .112, spineW: .46, spineH: .39, tieStep: .96, supportStep: 4.9, gaugeScale: .98, architecture: "Vekoma suspended box spine", connectorStyle: "vekoma-box"},
+    vekomanext:   {rail: .119, spineW: .50, spineH: .42, tieStep: 1.02, supportStep: 5.1, gaugeScale: 1.00, architecture: "Vekoma modern box spine", connectorStyle: "vekoma-box"},
+    intaminblitz: {rail: .124, spineW: .34, spineH: .30, tieStep: .94, supportStep: 5.3, gaugeScale: .99, architecture: "Intamin Blitz launch chassis", connectorStyle: "intamin-lattice"},
+    macklaunch:   {rail: .118, spineW: .31, spineH: .25, tieStep: .88, supportStep: 5.0, gaugeScale: 1.04, architecture: "Mack tubular launch rails", connectorStyle: "mack-threepipe"},
+    gerstlauer:   {rail: .116, spineW: .43, spineH: .36, tieStep: .90, supportStep: 4.6, gaugeScale: .95, architecture: "Gerstlauer compact box spine", connectorStyle: "gerstlauer-truss"},
+    premierlim:   {rail: .113, spineW: .27, spineH: .24, tieStep: .86, supportStep: 4.8, gaugeScale: .97, architecture: "Premier tubular LIM rails", connectorStyle: "premier-lattice"},
+    maurerspin:   {rail: .106, spineW: .22, spineH: .21, tieStep: .84, supportStep: 4.4, gaugeScale: .94, architecture: "Maurer compact spinner rails", connectorStyle: "spinner-tube"},
+    gravitywood:  {rail: .108, spineW: .19, spineH: .17, tieStep: .58, supportStep: 2.8, gaugeScale: 1.01, architecture: "Gravity Group timber track", connectorStyle: "wood-frame"},
+    zamperlafamily:{rail: .102, spineW: .21, spineH: .19, tieStep: .82, supportStep: 4.1, gaugeScale: .92, architecture: "Zamperla family tubular rails", connectorStyle: "family-tube"},
+    intaminprefab:{rail: .119, spineW: .24, spineH: .21, tieStep: .70, supportStep: 3.4, gaugeScale: 1.03, architecture: "Intamin prefabricated timber track", connectorStyle: "wood-frame"}
   }
   , cc = i => i === "arrow4d" || i === "axis"
 ;
@@ -22666,6 +22666,76 @@ function rm(i) {
         let J, de = [], Fe, Ne = 0, Ee = 2.6, Ve = 0;
         const I = w.hang ? .46 : Te ? -.3 : Ae ? -1.03 : -.53
           , ve = .67;
+        const addTrackConnectors = (left, right, spine, tangent, normal, side) => {
+            const style = profile.connectorStyle || "standard";
+            const midL = left.clone().lerp(spine, .56);
+            const midR = right.clone().lerp(spine, .56);
+            if (style === "bm-wave") {
+                // B&M-style flat, swept connector plates: a shallow fore/aft dog-leg
+                // gives the characteristic repeated wavy edge between rails and box spine.
+                const wave = tangent.clone().multiplyScalar(.15);
+                const lMid = midL.add(wave), rMid = midR.sub(wave);
+                N.push(Se(left, lMid, .075), Se(lMid, spine, .075),
+                       Se(right, rMid, .075), Se(rMid, spine, .075));
+                N.push(Xe(lMid, spine, normal, .105, .055),
+                       Xe(rMid, spine, normal, .105, .055));
+            } else if (style === "arrow-inset") {
+                // Arrow-style tubular cross-tie with rail seats and inset triangular gussets.
+                const center = left.clone().lerp(right, .5);
+                N.push(Se(left, right, .085));
+                for (const rail of [left, right]) {
+                    const seat = rail.clone().lerp(center, .23).addScaledVector(normal, -.11);
+                    N.push(Se(rail, seat, .09), Se(seat, spine, .075));
+                    N.push(Se(rail.clone().addScaledVector(normal, .08), seat, .052));
+                }
+                N.push(Se(center, spine, .09));
+            } else if (style === "intamin-lattice" || style === "gerstlauer-truss" || style === "premier-lattice") {
+                // Triangulated three-dimensional truss: paired diagonals and a spine chord.
+                const bias = style === "gerstlauer-truss" ? .12 : .18;
+                const lNode = left.clone().lerp(spine, .55).addScaledVector(tangent, bias);
+                const rNode = right.clone().lerp(spine, .55).addScaledVector(tangent, -bias);
+                N.push(Se(left, lNode, .073), Se(lNode, spine, .073),
+                       Se(right, rNode, .073), Se(rNode, spine, .073),
+                       Se(lNode, rNode, .052));
+            } else if (style === "mack-threepipe") {
+                // Mack-like three-pipe arrangement with two diagonal arms meeting the lower spine.
+                const lower = spine.clone().addScaledVector(normal, -.13);
+                N.push(Se(left, right, .07), Se(left, lower, .073),
+                       Se(right, lower, .073), Se(lower, spine, .085));
+            } else if (style === "vekoma-box") {
+                // Welded box-tie arms with short vertical web plates.
+                const lWeb = left.clone().lerp(spine, .68);
+                const rWeb = right.clone().lerp(spine, .68);
+                N.push(Se(left, lWeb, .082), Se(lWeb, spine, .082),
+                       Se(right, rWeb, .082), Se(rWeb, spine, .082),
+                       Se(lWeb, rWeb, .06));
+            } else if (style === "ibox-web") {
+                // I-Box track web: broad transverse tie plus diagonal web stiffeners.
+                N.push(Se(left, right, .09), Se(left, spine, .07), Se(right, spine, .07));
+                N.push(Xe(left.clone().lerp(spine,.55), right.clone().lerp(spine,.55), normal, .09, .045));
+            } else if (style === "arrow-four") {
+                // Four-rail chassis: two running rails and two lower guide rails.
+                N.push(Se(left, right, .075));
+                for (const sign of [-1,1]) {
+                    const guide = spine.clone().addScaledVector(side, sign*.68).addScaledVector(normal,-.46);
+                    N.push(Se(left.clone().lerp(guide,.5), guide, .064),
+                           Se(right.clone().lerp(guide,.5), guide, .064));
+                }
+            } else if (style === "axis-cage") {
+                // Enclosed carrier frame around the central Axis rail assembly.
+                const upper = spine.clone().addScaledVector(normal,.22);
+                const lower = spine.clone().addScaledVector(normal,-.22);
+                N.push(Se(left,right,.08),Se(left,upper,.07),Se(right,upper,.07),
+                       Se(left,lower,.07),Se(right,lower,.07),Se(upper,lower,.06));
+            } else if (style === "spinner-tube" || style === "family-tube") {
+                // Compact tubular crossmember with paired triangular rail seats.
+                const center = left.clone().lerp(right,.5);
+                N.push(Se(left,right,.075),Se(left,center,.06),Se(right,center,.06),
+                       Se(center,spine,.075));
+            } else {
+                N.push(Se(left, spine, .085), Se(right, spine, .085));
+            }
+        };
         re.forEach( ({position: ue, up: ne, kind: Z, color: we}, ze) => {
             const lt = _e.length
               , rt = xe.length
@@ -22708,9 +22778,20 @@ function rm(i) {
             }
             if (Ne >= Ve) {
                 if (Ve = Ne + (Te ? profile.tieStep : Ie ? profile.tieStep * 2.4 : profile.tieStep),
-                Te && !ee)
-                    N.push(Xe(Vt.clone().addScaledVector(Et, .34).addScaledVector(ne, -.34), nt.clone().addScaledVector(Et, -.34).addScaledVector(ne, -.34), ne, profile.spineW * .72, Math.max(.08, profile.rail * .8)));
-                else if (Ie)
+                Te && !ee) {
+                    const tieLeft = Vt.clone().addScaledVector(Et, .34).addScaledVector(ne, -.34);
+                    const tieRight = nt.clone().addScaledVector(Et, -.34).addScaledVector(ne, -.34);
+                    N.push(Xe(tieLeft, tieRight, ne, profile.spineW * .72, Math.max(.08, profile.rail * .8)));
+                    if (profile.connectorStyle === "ibox-web") {
+                        N.push(Se(Vt, ht, .075), Se(nt, ht, .075));
+                    } else if (profile.connectorStyle === "topper-cap") {
+                        N.push(Se(Vt, ht, .09), Se(nt, ht, .09));
+                        N.push(Xe(tieLeft.clone().addScaledVector(ne,.13), tieRight.clone().addScaledVector(ne,.13), ne, profile.spineW*.5, .055));
+                    } else if (profile.connectorStyle === "wood-frame") {
+                        const timberOffset = ne.clone().multiplyScalar(-.17);
+                        N.push(Xe(tieLeft.clone().add(timberOffset), tieRight.clone().add(timberOffset), ne, profile.spineW*.88, .12));
+                    }
+                } else if (Ie)
                     ee || N.push(pe(ht, .38, .36, .45));
                 else if (ee)
                     N.push(Se(Vt, nt, .08));
@@ -22723,7 +22804,7 @@ function rm(i) {
                         N.push(Se(Fe.clone().addScaledVector(P, ve), Vt, .077), Se(Fe.clone().addScaledVector(P, -ve), nt, .077))
                     }
                 } else
-                    N.push(Se(Vt, ht, .093), Se(nt, ht, .093));
+                    addTrackConnectors(Vt, nt, ht, re[Math.min(re.length - 1, ze + 1)].position.clone().sub(re[Math.max(0, ze - 1)].position).normalize(), ne, Et);
                 if (Fe = ht,
                 !ee && Z !== "track" && !presetElementKinds.has(Z)) {
                     const st = Z === "station" || Z === "drive" ? "drive" : Z === "block" ? "brake" : Z
@@ -23257,7 +23338,7 @@ const Ri = "timberline-park-v2"
   , vn = {
     length: {
         title: "Length",
-        glyph: "LEN",
+        glyph: "â†”",
         x: 66,
         y: 43,
         dx: .86,
@@ -23265,7 +23346,7 @@ const Ri = "timberline-park-v2"
     },
     turn: {
         title: "Curve",
-        glyph: "TURN",
+        glyph: "â†»",
         x: -67,
         y: 38,
         dx: 1,
@@ -23273,7 +23354,7 @@ const Ri = "timberline-park-v2"
     },
     pitch: {
         title: "Slope",
-        glyph: "PITCH",
+        glyph: "â†•",
         x: -58,
         y: -42,
         dx: 0,
@@ -23281,7 +23362,7 @@ const Ri = "timberline-park-v2"
     },
     bank: {
         title: "Bank",
-        glyph: "BANK",
+        glyph: "â¤¾",
         x: 61,
         y: -43,
         dx: 1,
@@ -23296,6 +23377,22 @@ const Ri = "timberline-park-v2"
     end: "End of track  |  Connect the circuit to finish the test.",
     derailed: "Derailed  |  Train left the track."
 };
+function modelCardArt(modelKey) {
+    const model = Ct[modelKey], style = model?.trackProfile?.connectorStyle || "standard";
+    const rail = model?.style === "wood" ? "#d6a46c" : "#9ee8f3";
+    const spine = model?.style === "wood" ? "#9a6944" : "#9aaec8";
+    const tie = style === "bm-wave" ? `<path d="M22 51 Q31 41 40 51 T58 51 M72 51 Q81 41 90 51 T108 51" />` :
+        style === "arrow-inset" ? `<path d="M24 51 L43 40 L65 51 L87 40 L106 51 M43 40 L87 40" />` :
+        style.includes("truss") || style.includes("lattice") ? `<path d="M22 51 L43 38 L65 51 L87 38 L108 51 M43 38 L87 38" />` :
+        style.includes("wood") ? `<path d="M22 51 L22 42 M37 51 L37 42 M52 51 L52 42 M67 51 L67 42 M82 51 L82 42 M97 51 L97 42" />` :
+        `<path d="M25 51 L42 40 L65 51 L88 40 L105 51" />`;
+    return `<svg class="model-art" viewBox="0 0 130 76" role="img" aria-label="${model.name} track and train illustration">
+      <path class="art-spine" d="M12 55 Q34 53 50 45 T82 38 T118 47" />
+      <path class="art-ties">${tie}</path>
+      <path class="art-rail" d="M12 28 Q34 26 50 18 T82 11 T118 20 M12 34 Q34 32 50 24 T82 17 T118 26" />
+      <g class="art-train"><path d="M46 7 Q49 2 58 2 H83 Q91 2 95 9 L98 15 H43 Z"/><rect x="52" y="4" width="8" height="6" rx="1"/><rect x="65" y="4" width="8" height="6" rx="1"/><rect x="78" y="4" width="8" height="6" rx="1"/><circle cx="53" cy="16" r="2.2"/><circle cx="87" cy="16" r="2.2"/></g>
+    </svg>`;
+}
 function om(i, e) {
     const t = i.root;
     t.innerHTML = `
@@ -23322,7 +23419,7 @@ function om(i, e) {
     <div class="legend" data-combos-ui-region="text" data-combos-ui-id="shortcuts" data-combos-ui-critical="false">DRAG to pan  |  RIGHT DRAG to orbit  |  SCROLL to zoom</div>
     <section class="workbench" data-combos-ui-region="controls" data-combos-ui-id="track-workbench" aria-label="Track builder">
       <div class="bench-head"><div><label id="mode">STATION PLACEMENT</label><h2 id="title">Start a coaster</h2></div><div class="bench-tools"><button id="manage" class="secondary">Tools</button><button id="new" class="secondary">NEW COASTER</button></div></div>
-      <div id="setup" class="row"><label class="picker">Train model<select id="model">${uc.map(P => `<option value="${P}">${Ct[P].name}</option>`).join("")}</select></label><button id="rotate" class="secondary" title="Rotate station by 45 degrees">ROTATE 0 DEG</button></div><div id="model-cards" class="model-cards">${uc.map(P => `<button type="button" class="model-card" data-model="${P}" data-style="${Ct[P].style}"><b>${Ct[P].name}</b><small>${Ct[P].detail}</small></button>`).join("")}</div>
+      <div id="setup" class="row"><label class="picker">Train model<select id="model">${uc.map(P => `<option value="${P}">${Ct[P].name}</option>`).join("")}</select></label><button id="rotate" class="secondary" title="Rotate station by 45 degrees">ROTATE 0 DEG</button></div><div id="model-cards" class="model-cards">${uc.map(P => `<button type="button" class="model-card" data-model="${P}" data-style="${Ct[P].style}" data-connector="${Ct[P].trackProfile?.connectorStyle || "standard"}"><span class="model-card-art">${modelCardArt(P)}</span><b>${Ct[P].name}</b><small>${Ct[P].detail}</small></button>`).join("")}</div>
       <div id="editing" class="row" hidden><label class="picker">Next piece<select id="kind">${dc.map(P => `<option value="${P}">${tr[P]}</option>`).join("")}</select></label><select id="rides" aria-label="Selected coaster" hidden></select></div>
       <div id="train-settings" class="train-settings" hidden>
         <label>Cars per train <input id="train-cars" type="number" min="1" step="1" value="5"></label>
