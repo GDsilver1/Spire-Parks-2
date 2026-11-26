@@ -1289,3 +1289,23 @@ button, .nav button, .action, .secondary, .hamburger { font-family: Inter, "Treb
   .model-card { min-height: 116px !important; }
   .model-card-art { height: 62px; }
 }
+
+/* Reliable Unicode symbol fallback for the four compact track handles */
+.axis i {
+  font-family: "Segoe UI Symbol", "Noto Sans Symbols 2", "Arial Unicode MS", "DejaVu Sans", sans-serif !important;
+  font-variant-emoji: text;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+.axis.length { --axis-color: #85f0a0; }
+.axis.turn { --axis-color: #ffc36c; }
+.axis.pitch { --axis-color: #68d8ff; }
+.axis.bank { --axis-color: #f39be1; }
+
+/* Clear, compact audio control */
+.nav #sound-toggle { font-size:10px; font-weight:850; letter-spacing:.04em; min-width:74px; padding:0 9px; color:#d9fff1; border-color:#5dbb9b; }
+.nav #sound-toggle[aria-pressed="true"] { color:#ffcf9b; border-color:#a77c50; background:#39291e; }
+.axis i { font-family: "Arial Unicode MS", "Segoe UI Symbol", system-ui, sans-serif !important; font-variant-emoji: text; }
