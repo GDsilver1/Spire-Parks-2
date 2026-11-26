@@ -23338,7 +23338,7 @@ const Ri = "timberline-park-v2"
   , vn = {
     length: {
         title: "Length",
-        glyph: "â†”",
+        glyph: "â†¦",
         x: 66,
         y: 43,
         dx: .86,
@@ -23346,23 +23346,23 @@ const Ri = "timberline-park-v2"
     },
     turn: {
         title: "Curve",
-        glyph: "â†»",
+        glyph: "â†”",
         x: -67,
         y: 38,
         dx: 1,
         dy: 0
     },
     pitch: {
-        title: "Slope",
-        glyph: "â†•",
+        title: "Rise / Height",
+        glyph: "&#8597;",
         x: -58,
         y: -42,
         dx: 0,
         dy: -1
     },
     bank: {
-        title: "Bank",
-        glyph: "â¤¾",
+        title: "Banking",
+        glyph: "â†»",
         x: 61,
         y: -43,
         dx: 1,
@@ -23395,6 +23395,65 @@ function modelCardArt(modelKey) {
 }
 function om(i, e) {
     const t = i.root;
+    // Procedural coaster audio: no external files, and AudioContext is created only after user input.
+    let coasterAudio = null;
+    const initCoasterAudio = () => {
+        if (coasterAudio) {
+            if (coasterAudio.ctx.state === "suspended") coasterAudio.ctx.resume().catch(() => {});
+            return coasterAudio;
+        }
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        try {
+            const ctx = new AudioCtx();
+            const master = ctx.createGain(); master.gain.value = .34; master.connect(ctx.destination);
+            const rollGain = ctx.createGain(); rollGain.gain.value = 0; rollGain.connect(master);
+            const rollFilter = ctx.createBiquadFilter(); rollFilter.type = "lowpass"; rollFilter.frequency.value = 520; rollFilter.Q.value = .7; rollFilter.connect(rollGain);
+            const buffer = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            let last = 0;
+            for (let j = 0; j < data.length; j++) { last = last * .82 + (Math.random() * 2 - 1) * .18; data[j] = last * 2.8; }
+            const noise = ctx.createBufferSource(); noise.buffer = buffer; noise.loop = true; noise.connect(rollFilter); noise.start();
+            const wheelOsc = ctx.createOscillator(); wheelOsc.type = "sawtooth"; wheelOsc.frequency.value = 47;
+            const wheelGain = ctx.createGain(); wheelGain.gain.value = 0; wheelOsc.connect(wheelGain); wheelGain.connect(master); wheelOsc.start();
+            const chainGain = ctx.createGain(); chainGain.gain.value = 0; chainGain.connect(master);
+            const chainOsc = ctx.createOscillator(); chainOsc.type = "square"; chainOsc.frequency.value = 8.5;
+            const chainTone = ctx.createBiquadFilter(); chainTone.type = "bandpass"; chainTone.frequency.value = 1450; chainTone.Q.value = 2.2;
+            chainOsc.connect(chainTone); chainTone.connect(chainGain); chainOsc.start();
+            coasterAudio = {ctx, master, rollGain, rollFilter, wheelOsc, wheelGain, chainGain, chainOsc, chainTone, running:false};
+            return coasterAudio;
+        } catch (_) { return null; }
+    };
+    const coasterSound = (kind, speed = 0) => {
+        const a = initCoasterAudio(); if (!a) return;
+        const now = a.ctx.currentTime;
+        if (kind === "start") {
+            a.running = true;
+            a.rollGain.gain.cancelScheduledValues(now); a.rollGain.gain.setTargetAtTime(.10, now, .35);
+            a.wheelGain.gain.setTargetAtTime(.018, now, .3);
+            a.chainGain.gain.setTargetAtTime(.0, now, .12);
+        } else if (kind === "update" && a.running) {
+            const v = Math.max(0, Math.min(1, Math.abs(speed) / 42));
+            a.rollGain.gain.setTargetAtTime(.045 + v * .19, now, .18);
+            a.rollFilter.frequency.setTargetAtTime(280 + v * 1750, now, .2);
+            a.wheelOsc.frequency.setTargetAtTime(35 + v * 115, now, .2);
+            a.wheelGain.gain.setTargetAtTime(.008 + v * .035, now, .2);
+        } else if (kind === "lift" && a.running) {
+            a.chainGain.gain.setTargetAtTime(.022, now, .18);
+            a.chainTone.frequency.setTargetAtTime(1150, now, .2);
+        } else if (kind === "quiet" && a.running) {
+            a.chainGain.gain.setTargetAtTime(0, now, .12);
+        } else if (kind === "stop") {
+            a.running = false;
+            for (const node of [a.rollGain.gain, a.wheelGain.gain, a.chainGain.gain]) node.setTargetAtTime(0, now, .22);
+        } else if (kind === "click") {
+            const osc = a.ctx.createOscillator(), gain = a.ctx.createGain();
+            osc.type = "sine"; osc.frequency.setValueAtTime(760, now); osc.frequency.exponentialRampToValueAtTime(260, now + .055);
+            gain.gain.setValueAtTime(.055, now); gain.gain.exponentialRampToValueAtTime(.001, now + .06);
+            osc.connect(gain); gain.connect(a.master); osc.start(now); osc.stop(now + .065);
+        }
+    };
+    t.addEventListener("pointerdown", () => { initCoasterAudio(); }, {once:true});
     t.innerHTML = `
     <canvas id="park" tabindex="0" aria-label="Interactive 3D coaster park"></canvas>
     <header class="mast" data-combos-ui-region="hud" data-combos-ui-id="park-title">
@@ -23442,7 +23501,7 @@ function om(i, e) {
         <button id="start-game" class="title-start">START DESIGNING</button>
         <button id="continue-game" class="title-secondary">CONTINUE PARK</button>
         <div class="title-import"><input id="import-code" placeholder="Paste a park code..." aria-label="Park code"><button id="import-park">IMPORT</button></div>
-        <small>v1.7</small>
+        <small>v1.5</small>
       </div>
       <div class="title-footer"><span>SPIRE PARKS 2</span><span>DESIGN  |  BUILD  |  RIDE</span><span>v2.1</span></div>
     </section>
@@ -23731,7 +23790,7 @@ function om(i, e) {
         N(),
         A(),
         me(),
-        x("Station placed. Drag the handles, then build.")
+        playSound("place"), x("Station placed. Drag the handles, then build.")
     }
     function Ne() {
         if (S) {
@@ -23759,7 +23818,7 @@ function om(i, e) {
         N(),
         A(),
         me(),
-        x(`${D.pieces.length} built  |  ${Math.round(M.get(D.id).route.length * 3.28084)} ft${H ? "  |  tunnel carved" : ""}`, "good")
+        playSound("place"), x(`${D.pieces.length} built  |  ${Math.round(M.get(D.id).route.length * 3.28084)} ft${H ? "  |  tunnel carved" : ""}`, "good")
     }
     function Ee() {
         G || !D || S || pe || !D.pieces.length || (D.closed ? D.closed = !1 : L = {
@@ -23779,9 +23838,10 @@ function om(i, e) {
         N(),
         A(),
         me(),
-        x(D.closed ? "Circuit connected. Run a gravity test." : "Circuit reopened.", "good"))
+        D.closed && playSound("connect"), x(D.closed ? "Circuit connected. Run a gravity test." : "Circuit reopened.", "good"))
     }
     function I() {
+        coasterSound("stop");
         if (autoPovRecorder?.state === "recording") finishAutoPov();
         !pe || !D || (Xe?.dispose(),
         Xe = void 0,
@@ -23789,7 +23849,7 @@ function om(i, e) {
         Ae(D),
         de(),
         N(),
-        x("Back in the editor."))
+        updateCoasterAudio(0, "", false), x("Back in the editor."))
     }
     function ve() {
         if (!D?.pieces.length)
@@ -23801,6 +23861,7 @@ function om(i, e) {
         pe = new em(M.get(D.id).route,D.model,D.closed,{
             ...xe
         }, D.trainCars ?? Ct[D.model].cars),
+        coasterSound("start"),
         S = void 0,
         Nt(pe),
         ee = 0,
@@ -23814,7 +23875,7 @@ function om(i, e) {
         fe = !0,
         N(),
         A(),
-        x("Dispatching  |  0 mph")
+        audioInit(), playSound("dispatch"), x("Dispatching  |  0 mph")
     }
     function ge() {
         S = void 0,
@@ -23926,19 +23987,26 @@ function om(i, e) {
         fe && J(),
         pe && D) {
             if (pe.outcome === "running") {
+                const audioPoint = pe.route.at(pe.position);
+                coasterSound(audioPoint.kind === "lift" ? "lift" : "update", pe.speed);
                 for (ce = !0,
                 ee += H; ee >= 1 / 120 && pe.outcome === "running"; )
                     pe.step(1 / 120),
                     ee -= 1 / 120;
                 const K = pe.speed * ee;
+                const audioSample = pe.route.at(pe.position);
+                updateCoasterAudio(pe.speed, audioSample?.kind || "", true);
                 if (f.setTrain(D, pe.route, Oe => pe.carPosition(Oe, K)),
                 pe.outcome !== "running") {
                     Nt(pe),
+                    coasterSound("stop"),
                     pe.outcome === "derailed" && (Je = !1,
                     Xe = new sm(f.scene,f.train(D),pe.route.at(pe.position).tangent,pe.impactSpeed,pe.physics.gravity),
                     it = P),
                     N();
                     const Oe = pe.outcome;
+                    if (Oe === "station") playSound("finish"); else if (Oe === "rollback") playSound("rollback"); else playSound("brake");
+                    updateCoasterAudio(0, "", false);
                     x(am[Oe], Oe === "station" ? "good" : "error");
                     if (autoPovRecorder?.state === "recording") setTimeout(finishAutoPov, 700)
                 } else if (P - ae > 180) {
@@ -24018,6 +24086,88 @@ function om(i, e) {
     const nt = (P, H) => r(P).addEventListener("click", H, {
         signal: b
     });
+
+    // Procedural coaster audio: no external files, autoplay, or network requests.
+    let audioCtx = null, audioMaster = null, rollingGain = null, liftGain = null;
+    let rollingSource = null, liftOsc = null, audioMuted = false, lastAudioKind = "";
+    const soundButton = document.createElement("button");
+    soundButton.id = "sound-toggle";
+    soundButton.type = "button";
+    soundButton.textContent = "SOUND ON";
+    soundButton.setAttribute("aria-label", "Toggle coaster sounds");
+    soundButton.title = "Toggle coaster sounds";
+    n("record-pov").parentNode.insertBefore(soundButton, n("record-pov"));
+    try { audioMuted = localStorage.getItem(`${Ri}-muted`) === "1"; } catch {}
+    const audioInit = () => {
+        if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume(); return; }
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) { soundButton.textContent = "NO AUDIO"; soundButton.disabled = true; return; }
+        audioCtx = new AudioCtx();
+        audioMaster = audioCtx.createGain();
+        audioMaster.gain.value = audioMuted ? 0 : .42;
+        audioMaster.connect(audioCtx.destination);
+        const length = audioCtx.sampleRate * 2;
+        const noiseBuffer = audioCtx.createBuffer(1, length, audioCtx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        let last = 0;
+        for (let j = 0; j < length; j++) { last = last * .84 + (Math.random() * 2 - 1) * .16; data[j] = last; }
+        rollingSource = audioCtx.createBufferSource();
+        rollingSource.buffer = noiseBuffer; rollingSource.loop = true;
+        const wheelFilter = audioCtx.createBiquadFilter(); wheelFilter.type = "lowpass"; wheelFilter.frequency.value = 620;
+        rollingGain = audioCtx.createGain(); rollingGain.gain.value = 0;
+        rollingSource.connect(wheelFilter); wheelFilter.connect(rollingGain); rollingGain.connect(audioMaster); rollingSource.start();
+        const liftFilter = audioCtx.createBiquadFilter(); liftFilter.type = "bandpass"; liftFilter.frequency.value = 780; liftFilter.Q.value = .7;
+        liftGain = audioCtx.createGain(); liftGain.gain.value = 0;
+        liftOsc = audioCtx.createOscillator(); liftOsc.type = "square"; liftOsc.frequency.value = 9.5;
+        liftOsc.connect(liftFilter); liftFilter.connect(liftGain); liftGain.connect(audioMaster); liftOsc.start();
+        soundButton.textContent = audioMuted ? "SOUND OFF" : "SOUND ON";
+    };
+    const audioRamp = (param, value, time=.12) => {
+        if (!audioCtx || !param) return;
+        const now = audioCtx.currentTime;
+        param.cancelScheduledValues(now); param.setTargetAtTime(value, now, time);
+    };
+    const playSound = (kind) => {
+        if (audioMuted) return;
+        audioInit(); if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const tone = (freq, endFreq, duration, volume, wave="sine") => {
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.type = wave; osc.frequency.setValueAtTime(freq, now); osc.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq), now+duration);
+            gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(volume,now+.012); gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+            osc.connect(gain); gain.connect(audioMaster); osc.start(now); osc.stop(now+duration+.03);
+        };
+        if (kind === "place") { tone(150,58,.19,.22,"triangle"); tone(520,180,.09,.055,"sine"); }
+        else if (kind === "click") tone(720,390,.045,.045,"triangle");
+        else if (kind === "dispatch") { tone(440,660,.22,.12); setTimeout(()=>{ if (!audioMuted) tone(660,880,.2,.1); },170); }
+        else if (kind === "connect") { tone(260,420,.13,.09,"triangle"); tone(420,620,.16,.07); }
+        else if (kind === "brake") { tone(190,70,.32,.12,"sawtooth"); }
+        else if (kind === "finish") { tone(523,784,.25,.09); setTimeout(()=>{ if (!audioMuted) tone(659,988,.28,.08); },130); }
+        else if (kind === "rollback") { tone(260,115,.35,.10,"triangle"); }
+    };
+    const updateCoasterAudio = (speed, kind, running) => {
+        if (!audioCtx || audioMuted) return;
+        const mph = Math.abs(speed) * 2.236936;
+        const rolling = running ? Math.min(.24, .012 + mph * .0032) : 0;
+        audioRamp(rollingGain.gain, rolling, .18);
+        audioRamp(liftGain.gain, running && kind === "lift" ? .035 : 0, .12);
+        if (running && kind !== lastAudioKind && kind === "brake") playSound("brake");
+        lastAudioKind = running ? kind : "";
+    };
+    const setSoundMuted = muted => {
+        audioMuted = muted;
+        try { localStorage.setItem(`${Ri}-muted`, muted ? "1" : "0"); } catch {}
+        if (!muted) audioInit();
+        if (audioCtx) audioRamp(audioMaster.gain, muted ? 0 : .42, .04);
+        soundButton.textContent = muted ? "SOUND OFF" : "SOUND ON";
+        soundButton.setAttribute("aria-pressed", String(muted));
+    };
+    soundButton.addEventListener("click", () => { setSoundMuted(!audioMuted); if (!audioMuted) playSound("click"); }, {signal:b});
+    soundButton.setAttribute("aria-pressed", String(audioMuted));
+    soundButton.textContent = audioMuted ? "SOUND OFF" : "SOUND ON";
+    // Browsers require a real gesture before audio can start.
+    n("start-game").addEventListener("pointerdown", audioInit, {once:true, signal:b});
+    n("park").addEventListener("pointerdown", audioInit, {once:true, signal:b});
     nt("commit", Ne),
     nt("manage", () => S ? Ie() : j()),
     nt("tools-done", () => d.close()),
@@ -24458,7 +24608,7 @@ function om(i, e) {
     nt("menu-main", () => { n("menu-dialog").close(); titleScreen.classList.remove("dismissed"); });
     m("park-name").addEventListener("change", () => { parkName=String(m("park-name").value||"Untitled Park").trim().slice(0,48)||"Untitled Park"; m("park-name").value=parkName; me(); x("Park name saved.","good"); });
     m("coaster-name").addEventListener("change", () => { if(!D)return; D.name=String(m("coaster-name").value||Ct[D.model].name).trim().slice(0,48)||Ct[D.model].name; m("coaster-name").value=D.name; $(); me(); N(); x("Coaster name saved.","good"); });
-    for (const card of n("model-cards").querySelectorAll("[data-model]")) card.addEventListener("click",()=>{ Y=card.dataset.model; m("model").value=Y; for(const c of n("model-cards").children)c.classList.toggle("selected",c===card); x(Ct[Y].detail); });
+    for (const card of n("model-cards").querySelectorAll("[data-model]")) card.addEventListener("click",()=>{ playSound("click"); Y=card.dataset.model; m("model").value=Y; for(const c of n("model-cards").children)c.classList.toggle("selected",c===card); x(Ct[Y].detail); });
 
     nt("continue-game", startTitle);
     nt("code-close", () => n("code-dialog").close());
